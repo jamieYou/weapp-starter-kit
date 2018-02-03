@@ -1,0 +1,26 @@
+{
+  "presets": [
+    [
+      "env",
+      {
+        "targets": {
+          "browsers": [
+            "last 2 versions",
+            "safari >= 8"
+          ]
+        }
+      }
+    ],
+    "stage-0",
+    "flow"
+  ],
+  "plugins": [
+    "lodash",
+    "transform-decorators-legacy"
+  ],
+  "env": {
+    "production": {
+      "presets": ["minify"]
+    }
+  }
+}
