@@ -17,6 +17,7 @@ module.exports = {
   resolve: {
     alias: {
       '@lib': path.join(srcPath, 'lib/index.js'),
+      '@store': path.join(srcPath, 'store/index.js'),
       '@utils': path.join(srcPath, 'utils/index.js'),
     }
   },
