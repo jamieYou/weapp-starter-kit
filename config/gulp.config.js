@@ -7,7 +7,6 @@ const rename = require('gulp-rename')
 const revertPath = require('gulp-revert-path')
 const eslint = require('gulp-eslint')
 const px2rpx = require('gulp-px2rpx')
-const cleanCSS = require('gulp-clean-css')
 const gulpif = require('gulp-if')
 const changed = require('gulp-changed')
 const ipv4 = require('ipv4')
@@ -62,7 +61,6 @@ const lessCompile = (src = srcFiles.style, dest = 'dist', use_changed = true) =>
         'Android >= 4.1'
       ])
     )
-    .pipe(gulpif(!settings.__DEV__, cleanCSS()))
     .pipe(rename({ extname: '.wxss' }))
     .pipe(gulp.dest(dest))
 }
@@ -70,9 +68,12 @@ const lessCompile = (src = srcFiles.style, dest = 'dist', use_changed = true) =>
 const buildJS = (src = srcFiles.js, dest = 'dist') => {
   return gulp.src(src, { base: 'src' })
     .pipe(changed(dest))
+    .pipe(eslint())
+    .pipe(eslint.format())
+    .pipe(gulpif(!settings.__DEV__, eslint.failAfterError()))
     .pipe(babel())
     .on('error', handleError)
-    .pipe(miniProgram(settings, webpackConfig.resolve.alias))
+    .pipe(miniProgram(settings))
     .pipe(revertPath())
     .pipe(gulp.dest(dest))
 }
@@ -84,11 +85,11 @@ const runWebpack = done => {
   done()
 }
 
-const lint = (src = ['src/**/*.js'], dest = 'dist') => {
+const lint = (src = ['src/**/*.js']) => {
   return gulp.src(src)
-    .pipe(changed(dest))
     .pipe(eslint())
     .pipe(eslint.format())
+    .pipe(eslint.failAfterError())
 }
 
 module.exports = {

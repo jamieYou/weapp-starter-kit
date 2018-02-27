@@ -1,19 +1,32 @@
-// http://es6.ruanyifeng.com/#docs/promise#finally
-Promise.prototype.finally = function (callback) {
+// http://es6.ruanyifeng.com/#docs/promise#Promise-prototype-finally
+Promise.prototype.finally = function (cb) {
   return this.then(
-    res => {
-      callback()
-      return res
-    },
-    err => {
-      callback()
-      throw err
-    }
+    value => Promise.resolve(cb()).then(() => value),
+    reason => Promise.resolve(cb()).then(() => {
+      throw reason
+    })
   )
 }
 
 // wx.api 转 promise
-const wxApis = ['request']
+const wxApis = [
+  'request',
+  'showToast',
+  'login',
+  'checkSession',
+  'chooseImage',
+  'canvasToTempFilePath',
+  'previewImage',
+  'getImageInfo',
+  'showLoading',
+  'getSystemInfo',
+  'uploadFile',
+  'downloadFile',
+  'requestPayment',
+  'hideShareMenu',
+  'getUserInfo',
+  'showModal',
+]
 
 wxApis.forEach(name => {
   const func = wx[name]

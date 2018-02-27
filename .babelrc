@@ -16,11 +16,23 @@
   ],
   "plugins": [
     "lodash",
-    "transform-decorators-legacy"
+    "transform-decorators-legacy",
+    [
+      "module-resolver",
+      {
+        "alias": {
+          "@lib": "./src/lib/index.js",
+          "@store": "./src/store/index.js",
+          "@utils": "./src/utils/index.js"
+        }
+      }
+    ]
   ],
   "env": {
     "production": {
-      "presets": ["minify"]
+      "presets": [
+        "minify"
+      ]
     }
   }
 }

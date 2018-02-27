@@ -3,17 +3,10 @@ const fs = require('fs')
 const _ = require('lodash')
 const path = require('path')
 
-function miniProgram(settings, alias) {
+function miniProgram(settings) {
   function replaceContent(file, content) {
     _.forEach(settings, (item, key) => {
       content = content.replace(new RegExp(`process\\.env\\.${key}`, 'g'), JSON.stringify(item))
-    })
-    _.forEach(alias, (real, fake) => {
-      const reg = new RegExp(fake, 'g')
-      if (reg.test(content)) {
-        const requirePath = path.relative(file.dirname, real)
-        content = content.replace(reg, requirePath)
-      }
     })
     if (/regeneratorRuntime\./.test(content)) {
       const libPath = path.relative(
