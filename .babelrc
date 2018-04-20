@@ -29,6 +29,11 @@
     ]
   ],
   "env": {
+    "staging": {
+      "presets": [
+        "minify"
+      ]
+    },
     "production": {
       "presets": [
         "minify"

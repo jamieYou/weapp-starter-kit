@@ -2,16 +2,10 @@ import { autorun, isObservable, _ } from '@lib'
 import copyStore from './copyStore'
 
 export default function Observer(options = {}, ...args) {
-  const { onLoad, onHide, onShow, onUnload, initProps } = options
+  const { onLoad, onHide, onShow, onUnload } = options
 
   const observerOptions = {
     _autoRunList: [],
-
-    _setProps(options) {
-      if (typeof initProps === 'function') {
-        this.props = initProps.call(this, options)
-      }
-    },
 
     _update(key, value) {
       const result = copyStore(value || {})
@@ -42,7 +36,8 @@ export default function Observer(options = {}, ...args) {
     },
 
     onLoad(options) {
-      this._setProps(options)
+      this.options = options
+      Object.defineProperty(this, 'props', { value: this.props })
       this._setAutoRun()
       onLoad && onLoad.apply(this, arguments)
     },

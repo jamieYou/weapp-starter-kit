@@ -9,7 +9,7 @@
 	},
 	"miniprogramRoot": "./dist/",
 	"compileType": "miniprogram",
-	"libVersion": "1.6.6",
+	"libVersion": "2.0.0",
 	"appid": "touristappid",
 	"projectname": "mini-program-starter-kit",
 	"condition": {

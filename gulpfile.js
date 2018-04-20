@@ -20,7 +20,6 @@ gulp.task('watch', done => {
   gulp.watch(config.srcFiles.other, gulp.series(['copy-file']))
   gulp.watch(config.srcFiles.style, gulp.series(['lessCompile']))
   gulp.watch(config.srcFiles.js, gulp.series(['buildJsTask']))
-  gulp.watch('src/**/_*.less', () => config.lessCompile(void 0, void 0, false))
   done()
 })
 
