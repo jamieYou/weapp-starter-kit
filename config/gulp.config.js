@@ -35,7 +35,7 @@ const handleError = function (err) {
 
 const srcFiles = {
   js: ['src/**/*.js', 'src/**/*.wxs', '!src/lib/**'],
-  style: ['src/**/*.less', 'src/**/*.wxss', '!src/**/_*.less'],
+  style: ['src/**/*.less', 'src/**/*.wxss'],
   other: ['src/**/*.wxml', 'src/**/*.json', 'src/**/*.{png,svg,jpg,jpeg}'],
 }
 
@@ -44,9 +44,8 @@ const fileCopy = (src = srcFiles.other, dest = 'dist') => {
 }
 
 // lessCompile
-const lessCompile = (src = srcFiles.style, dest = 'dist', use_changed = true) => {
+const lessCompile = (src = srcFiles.style, dest = 'dist') => {
   return gulp.src(src, { base: 'src' })
-    .pipe(gulpif(use_changed, changed(dest, { extension: '.wxss' })))
     .pipe(less())
     .on('error', handleError)
     .pipe(
