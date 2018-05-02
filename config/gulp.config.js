@@ -24,7 +24,6 @@ const settings = {
 }
 const colors = gutil.colors
 const handleError = function (err) {
-  console.log('\n')
   gutil.log(colors.red('Error!'))
   gutil.log('fileName: ' + colors.red(err.fileName))
   gutil.log('lineNumber: ' + colors.red(err.lineNumber))

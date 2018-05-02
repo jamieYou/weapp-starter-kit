@@ -1,7 +1,6 @@
 {
   "name": "mini-program-starter-kit",
-  "version": "1.0.2",
-  "main": "index.js",
+  "version": "1.0.5",
   "license": "MIT",
   "scripts": {
     "start": "gulp dev",
@@ -11,7 +10,7 @@
     "build": "cross-env NODE_ENV=production gulp build"
   },
   "devDependencies": {
-    "babel-core": "^6.26.0",
+    "babel-core": "^6.26.3",
     "babel-eslint": "^8.2.3",
     "babel-loader": "^7.1.4",
     "babel-plugin-lodash": "^3.3.2",
@@ -38,14 +37,14 @@
     "gulp-rename": "^1.2.2",
     "gulp-revert-path": "^2.0.0",
     "gulp-util": "^3.0.8",
-    "ipv4": "^1.0.2",
+    "ipv4": "^1.0.4",
     "through-gulp": "^0.5.0",
     "webpack-stream": "^4.0.3",
     "yargs": "^11.0.0"
   },
   "dependencies": {
-    "lodash": "^4.17.5",
-    "mobx": "^3.5.1",
+    "lodash": "^4.17.10",
+    "mobx": "^4.2.0",
     "qs": "^6.5.1"
   }
 }
