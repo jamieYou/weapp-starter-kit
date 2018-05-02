@@ -1,3 +1,3 @@
-import './utils/wx-shim'
+import '@utils'
 
 App({})

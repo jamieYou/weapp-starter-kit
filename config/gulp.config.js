@@ -24,7 +24,6 @@ const settings = {
 }
 const colors = gutil.colors
 const handleError = function (err) {
-  console.log('\n')
   gutil.log(colors.red('Error!'))
   gutil.log('fileName: ' + colors.red(err.fileName))
   gutil.log('lineNumber: ' + colors.red(err.lineNumber))
@@ -67,9 +66,9 @@ const lessCompile = (src = srcFiles.style, dest = 'dist') => {
 const buildJS = (src = srcFiles.js, dest = 'dist') => {
   return gulp.src(src, { base: 'src' })
     .pipe(changed(dest))
-    .pipe(eslint())
-    .pipe(eslint.format())
-    .pipe(gulpif(!settings.__DEV__, eslint.failAfterError()))
+    // .pipe(eslint())
+    // .pipe(eslint.format())
+    // .pipe(gulpif(!settings.__DEV__, eslint.failAfterError()))
     .pipe(babel())
     .on('error', handleError)
     .pipe(miniProgram(settings))
