@@ -38,10 +38,29 @@ yarn build //部署
 
 
 ### Global
-可以在 gulpfile.js 设置全局变量
+可以在 gulpfile.js 设置全局变量注入到代码里
 ```
 const settings = {
   ipv4,
   NODE_ENV: process.env.NODE_ENV || 'development',
 }
 ```
+### less
+* 下划线开头的文件用于被主文件import，编译并打包进主文件。
+  ```
+  // 当前文件 app.less
+  @import "styles/_variable";
+  ```
+  如果不加下划线的话会额外生成一个单独的css文件，不符合小程序配置规范的文件会变成无用的文件（但是不会报错）
+
+* wxss [文件导入](https://developers.weixin.qq.com/miniprogram/dev/framework/view/wxss.html#样式导入),
+  wxss支持运行时的样式导入，借助less的语法可以做到编译时不把import的文件内容打包进来，而是分开打包成两个文件
+  ```
+  // 当前文件 app.less
+  @import (css) "styles/share.wxss"; // 源文件后缀可以是less、css、wxss
+  ```
+  编译后
+  ```
+  // 当前文件 app.wxss
+  @import "styles/share.wxss";
+  ```
