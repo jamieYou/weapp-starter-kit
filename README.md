@@ -45,6 +45,7 @@ const settings = {
   NODE_ENV: process.env.NODE_ENV || 'development',
 }
 ```
+
 ### less
 * 下划线开头的文件用于被主文件import，编译并打包进主文件。
   ```
@@ -64,3 +65,38 @@ const settings = {
   // 当前文件 app.wxss
   @import "styles/share.wxss";
   ```
+
+### observer 使用
+```
+import { observer, userStore } from '@store'
+
+observer({
+  props: {
+    user: userStore
+  }，
+  data: {
+    topics: []
+  },
+  onLoad(){
+  
+  }
+})
+
+// 可以在wxml里面访问 user 了
+// 或者
+
+observer({
+  get props() {
+    // onLoad 后会执行这个方法，可以通过 this.options 访问页面参数
+    return {
+      user: userStore
+    }
+  }，
+  data: {
+    topics: []
+  },
+  onLoad(){
+  
+  }
+})
+```
