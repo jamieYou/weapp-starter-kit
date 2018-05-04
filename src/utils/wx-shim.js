@@ -1,13 +1,3 @@
-// http://es6.ruanyifeng.com/#docs/promise#Promise-prototype-finally
-Promise.prototype.finally = function (cb) {
-  return this.then(
-    value => Promise.resolve(cb()).then(() => value),
-    reason => Promise.resolve(cb()).then(() => {
-      throw reason
-    })
-  )
-}
-
 // wx.api 转 promise
 const wxApis = [
   'request',
