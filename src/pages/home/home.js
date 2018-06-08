@@ -5,9 +5,8 @@ Page({
     topics: []
   },
 
-  @Page.fetchAction
   async onLoad() {
     const res = await fetch('topics', { data: { limit: 5 } })
-    return { topics: res.data.data }
+    this.setData({ topics: res.data.data })
   }
 })

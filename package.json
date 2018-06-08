@@ -1,6 +1,6 @@
 {
   "name": "mini-program-starter-kit",
-  "version": "1.0.5",
+  "version": "1.0.6",
   "license": "MIT",
   "scripts": {
     "start": "gulp dev",
@@ -13,28 +13,28 @@
     "babel-core": "^6.26.3",
     "babel-eslint": "^8.2.3",
     "babel-loader": "^7.1.4",
-    "babel-plugin-lodash": "^3.3.2",
+    "babel-plugin-lodash": "^3.3.3",
     "babel-plugin-module-resolver": "^3.1.1",
-    "babel-plugin-transform-decorators-legacy": "^1.3.4",
-    "babel-preset-env": "^1.6.1",
+    "babel-plugin-transform-decorators-legacy": "^1.3.5",
+    "babel-preset-env": "^1.7.0",
     "babel-preset-flow": "^6.23.0",
-    "babel-preset-minify": "^0.4.0",
+    "babel-preset-minify": "^0.4.3",
     "babel-preset-stage-0": "^6.24.1",
-    "cross-env": "^5.1.4",
+    "cross-env": "^5.1.6",
     "del": "^3.0.0",
-    "eslint-plugin-import": "^2.11.0",
+    "eslint-plugin-import": "^2.12.0",
     "gulp": "gulpjs/gulp.git#4.0",
     "gulp-autoprefixer": "^5.0.0",
     "gulp-babel": "^7.0.1",
     "gulp-changed": "^3.2.0",
-    "gulp-clean-css": "^3.9.3",
+    "gulp-clean-css": "^3.9.4",
     "gulp-eslint": "^4.0.2",
     "gulp-if": "^2.0.2",
-    "gulp-less": "^3.4.0",
+    "gulp-less": "^3.5.0",
     "gulp-load-plugins": "^1.5.0",
     "gulp-postcss": "^7.0.1",
     "gulp-px2rpx": "^0.2.2",
-    "gulp-rename": "^1.2.2",
+    "gulp-rename": "^1.2.3",
     "gulp-revert-path": "^2.0.0",
     "gulp-util": "^3.0.8",
     "ipv4": "^1.0.4",
@@ -45,6 +45,6 @@
   "dependencies": {
     "lodash": "^4.17.10",
     "mobx": "^4.2.0",
-    "qs": "^6.5.1"
+    "qs": "^6.5.2"
   }
 }
