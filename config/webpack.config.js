@@ -14,13 +14,6 @@ module.exports = {
   entry: {
     index: path.join(srcPath, 'lib/index.js'),
   },
-  resolve: {
-    alias: {
-      '@lib': path.join(srcPath, 'lib/index.js'),
-      '@store': path.join(srcPath, 'store/index.js'),
-      '@utils': path.join(srcPath, 'utils/index.js'),
-    }
-  },
   output: {
     libraryTarget: "umd",
     library: "lib",
