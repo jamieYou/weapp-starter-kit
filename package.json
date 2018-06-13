@@ -1,6 +1,6 @@
 {
   "name": "mini-program-starter-kit",
-  "version": "1.0.6",
+  "version": "1.0.7",
   "license": "MIT",
   "scripts": {
     "start": "gulp dev",
@@ -43,6 +43,7 @@
     "yargs": "^11.0.0"
   },
   "dependencies": {
+    "core-decorators": "^0.20.0",
     "lodash": "^4.17.10",
     "mobx": "^4.2.0",
     "qs": "^6.5.2"

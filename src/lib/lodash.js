@@ -1,1 +1,1 @@
-export { merge, forEach } from 'lodash'
+export { get, has, merge, forEach } from 'lodash'

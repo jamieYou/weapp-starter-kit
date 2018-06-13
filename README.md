@@ -79,3 +79,22 @@ observer({
   }
 })
 ```
+
+### 异步 action 的使用
+[参考](https://cn.mobx.js.org/best/actions.html#flows)
+```
+class Test {
+  @fetchAction.flow
+  async* update() {
+    yield promise
+    // this.data.....
+  }
+
+  // 不使用 fetchAction 的情况
+  @asyncAction
+  async* update() {
+    yield promise
+    // this.data.....
+  }  
+}
+```
