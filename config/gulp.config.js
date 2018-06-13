@@ -20,10 +20,10 @@ const settings = {
   ipv4,
   NODE_ENV,
   PORT: process.env.PORT || 3000,
-  __DEV__: NODE_ENV === 'development'
+  __DEV__: NODE_ENV === 'development',
 }
 const colors = gutil.colors
-const handleError = function (err) {
+const handleError = function(err) {
   gutil.log(colors.red('Error!'))
   gutil.log('fileName: ' + colors.red(err.fileName))
   gutil.log('lineNumber: ' + colors.red(err.lineNumber))
@@ -39,32 +39,32 @@ const srcFiles = {
 }
 
 const fileCopy = (src = srcFiles.other, dest = 'dist') => {
-  return gulp.src(src, { base: 'src' }).pipe(changed(dest)).pipe(gulp.dest(dest))
+  return gulp
+    .src(src, { base: 'src' })
+    .pipe(changed(dest))
+    .pipe(gulp.dest(dest))
 }
 
 // lessCompile
 const lessCompile = (src = srcFiles.style, dest = 'dist') => {
-  return gulp.src(src, { base: 'src' })
+  return gulp
+    .src(src, { base: 'src' })
     .pipe(less())
     .on('error', handleError)
     .pipe(
       px2rpx({
         screenWidth: 375,
-        wxappScreenWidth: 750
-      })
+        wxappScreenWidth: 750,
+      }),
     )
-    .pipe(
-      autoprefixer([
-        'iOS >= 8',
-        'Android >= 4.1'
-      ])
-    )
+    .pipe(autoprefixer(['iOS >= 8', 'Android >= 4.1']))
     .pipe(rename({ extname: '.wxss' }))
     .pipe(gulp.dest(dest))
 }
 
 const buildJS = (src = srcFiles.js, dest = 'dist') => {
-  return gulp.src(src, { base: 'src' })
+  return gulp
+    .src(src, { base: 'src' })
     .pipe(changed(dest))
     .pipe(eslint())
     .pipe(eslint.format())
@@ -77,14 +77,16 @@ const buildJS = (src = srcFiles.js, dest = 'dist') => {
 }
 
 const runWebpack = done => {
-  gulp.src('src/lib/index.js')
+  gulp
+    .src('src/lib/index.js')
     .pipe(gulpWebpack(webpackConfig, webpack))
     .pipe(gulp.dest('dist/lib'))
   done()
 }
 
 const lint = (src = srcFiles.js) => {
-  return gulp.src(src)
+  return gulp
+    .src(src)
     .pipe(eslint())
     .pipe(eslint.format())
     .pipe(eslint.failAfterError())

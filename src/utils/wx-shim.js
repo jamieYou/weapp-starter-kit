@@ -37,9 +37,9 @@ wxApis.forEach(name => {
             reject(new Error(err.errMsg))
             fail && fail(err)
           },
-          complete
+          complete,
         })
       })
-    }
+    },
   })
 })

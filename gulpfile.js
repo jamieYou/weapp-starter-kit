@@ -23,23 +23,9 @@ gulp.task('watch', done => {
   done()
 })
 
-gulp.task('dev', gulp.series(
-  [
-    'clean',
-    'buildJsTask',
-    'webpack',
-    'lessCompile',
-    'copy-file',
-    'watch'
-  ]
-))
+gulp.task(
+  'dev',
+  gulp.series(['clean', 'buildJsTask', 'webpack', 'lessCompile', 'copy-file', 'watch']),
+)
 
-gulp.task('build', gulp.series(
-  [
-    'clean',
-    'buildJsTask',
-    'webpack',
-    'lessCompile',
-    'copy-file',
-  ]
-))
+gulp.task('build', gulp.series(['clean', 'buildJsTask', 'webpack', 'lessCompile', 'copy-file']))

@@ -6,7 +6,8 @@ export class Collection extends WebAPIStore {
   fetchApi: Object => Promise
   params: Object = {}
 
-  @observable meta = {
+  @observable
+  meta = {
     total: 0,
     page: 1,
     per_page: 10,
@@ -14,7 +15,7 @@ export class Collection extends WebAPIStore {
 
   @observable data: IObservableArray = []
 
-  @fetchAction.bound
+  @fetchAction.merge
   fetchData() {
     return this.fetchApi({ page: 1, per_page: this.meta.per_page, ...this.params })
   }
@@ -31,7 +32,7 @@ export class Collection extends WebAPIStore {
     this.data.push(...data)
   }
 
-  findItemById(id: string) {
+  findItem(id: number) {
     return this.data.find(item => item.id === id)
   }
 

@@ -1,4 +1,13 @@
-export { action, observable, runInAction, computed, toJS, extendObservable, IObservableArray, autorun } from '@lib'
+export {
+  action,
+  observable,
+  runInAction,
+  computed,
+  toJS,
+  extendObservable,
+  IObservableArray,
+  autorun,
+} from '@lib'
 export { enumerable, unEnumerable } from './enumerable'
 export asyncAction from './async-action'
 export fetchAction from './fetch-action'

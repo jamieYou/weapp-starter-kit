@@ -1,4 +1,5 @@
-import { observable, toJS, computed, _ } from '@lib'
+/* eslint-disable no-console */
+import { observable, toJS, computed } from '@lib'
 import { StoreHelper } from './store-helper'
 
 export class WebAPIStore extends StoreHelper {
@@ -10,18 +11,17 @@ export class WebAPIStore extends StoreHelper {
 
   setPendingState(actionName) {
     this.isFetching = true
-    this.logMessage("%cpending  ", "color:blue", actionName)
+    this.logMessage('%cpending  ', 'color:blue', actionName)
   }
 
-  setFulfilledState(res, actionName) {
-    const newState = _.has(res, 'statusCode') ? res.data : res
+  setFulfilledState(newState, actionName) {
     Object.assign(this, {
       isFetching: false,
       isRejected: false,
       isFulfilled: true,
       error: null,
     }, newState)
-    this.logMessage("%cfulfilled", "color:green", actionName)
+    this.logMessage('%cfulfilled', 'color:green', actionName)
   }
 
   setRejectedState(error, actionName, options) {
@@ -31,7 +31,7 @@ export class WebAPIStore extends StoreHelper {
       isRejected: true,
     }
     Object.assign(this, nextState, options)
-    this.logMessage("%crejected", "color:red", actionName)
+    this.logMessage('%crejected', 'color:red', actionName)
   }
 
   tryFetchData() {
@@ -41,9 +41,10 @@ export class WebAPIStore extends StoreHelper {
   logMessage(status, color, actionName) {
     if (process.env.NODE_ENV !== 'production') {
       console.log(
-        status, color,
+        status,
+        color,
         `${this.constructor.name.replace(/^\w/, w => w.toLowerCase())}->${actionName}`,
-        { state: toJS(this) }
+        { state: toJS(this) },
       )
     }
   }

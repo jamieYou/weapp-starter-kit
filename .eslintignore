@@ -1,2 +1,2 @@
 # eslint 白名单
-src/store/helper/*
+dist/*
