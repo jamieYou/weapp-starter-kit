@@ -2,6 +2,8 @@
 为小程序添加数据管理库 Mobx
 
 ### 更新日志
+[v1.1.0](docs/v1.1.0.md)
+
 [v1.0.5](docs/v1.0.5.md)
 
 ###  Installation
@@ -9,8 +11,8 @@
 ```
 # 克隆仓库到指定的文件夹
 $ git clone git@github.com:jokerapi/mini-program-starter-kit.git
-
-# cd miniapp-mobx-starter-kit
+$ cd miniapp-mobx-starter-kit
+$ cp project.config.json.example project.config.json
 ```
 
 ### Develop

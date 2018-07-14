@@ -35,7 +35,14 @@ export default function observer(options = {}, ...args) {
 
     onLoad() {
       Object.defineProperty(this, 'props', propsDescriptor)
-      Object.defineProperty(this, 'props', { value: this.props })
+      Object.defineProperty(this, 'props', { value: this.props, writable: true })
+      if (this.props instanceof Promise) {
+        return this.props.then(result => {
+          this.props = result
+          this.setAutoRun()
+          onLoad && onLoad.call(this, this.options)
+        })
+      }
       this.setAutoRun()
       onLoad && onLoad.call(this, this.options)
     },

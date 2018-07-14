@@ -4,3 +4,5 @@
 node_modules/
 dist/
 .idea/
+jsconfig.json
+project.config.json

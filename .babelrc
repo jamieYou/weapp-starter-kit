@@ -22,22 +22,12 @@
       {
         "alias": {
           "@lib": "./src/lib/index.js",
-          "@store": "./src/store/index.js",
-          "@utils": "./src/utils/index.js"
+          "@store$": "./src/store/index.js",
+          "@store": "./src/store",
+          "@utils$": "./src/utils/index.js",
+          "@utils": "./src/utils"
         }
       }
     ]
-  ],
-  "env": {
-    "staging": {
-      "presets": [
-        "minify"
-      ]
-    },
-    "production": {
-      "presets": [
-        "minify"
-      ]
-    }
-  }
+  ]
 }

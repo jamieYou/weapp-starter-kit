@@ -1,4 +1,3 @@
-import '@utils'
-import '@lib'
+import '@utils/wx-shim'
 
 App({})
