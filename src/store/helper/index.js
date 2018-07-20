@@ -7,7 +7,7 @@ export {
   extendObservable,
   IObservableArray,
   autorun,
-} from '@lib'
+} from 'mobx'
 export { enumerable, unEnumerable } from './enumerable'
 export asyncAction from './async-action'
 export fetchAction from './fetch-action'

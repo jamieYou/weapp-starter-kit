@@ -1,4 +1,5 @@
-import { _, observable } from '@lib'
+import { observable } from 'mobx'
+import _ from 'lodash'
 
 export function observables(properties, shallowList) {
   return target => {

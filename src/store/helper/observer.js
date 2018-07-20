@@ -1,4 +1,5 @@
-import { autorun, isObservable, toJS, _ } from '@lib'
+import { autorun, isObservable, toJS } from 'mobx'
+import _ from 'lodash'
 import activate from './activate'
 
 export default function observer(options = {}, ...args) {

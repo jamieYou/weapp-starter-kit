@@ -1,4 +1,4 @@
-import { action, observable, configure } from '@lib'
+import { action, observable, configure } from 'mobx'
 
 configure({ enforceActions: process.env.NODE_ENV !== 'production' })
 

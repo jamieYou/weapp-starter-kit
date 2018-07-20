@@ -1,4 +1,5 @@
-import { isObservable, _ } from '@lib'
+import _ from 'lodash'
+import { isObservable } from 'mobx'
 
 export default function activate(store) {
   isObservable(store)
