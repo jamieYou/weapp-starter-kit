@@ -1,4 +1,3 @@
-const path = require('path')
 const gulp = require('gulp')
 const autoprefixer = require('gulp-autoprefixer')
 const less = require('gulp-less')
@@ -12,8 +11,7 @@ const px2rpx = require('gulp-px2rpx')
 const gulpif = require('gulp-if')
 const changed = require('gulp-changed')
 const ipv4 = require('ipv4')
-const gulpWebpack = require('webpack-stream')
-const webpack = require('webpack')
+const notifier = require('node-notifier')
 const miniProgram = require('./gulp-mini-program')
 
 const NODE_ENV = process.env.NODE_ENV || 'development'
@@ -30,11 +28,12 @@ const handleError = function (err) {
   gutil.log('lineNumber: ' + colors.red(err.lineNumber))
   gutil.log('message: ' + err.message)
   gutil.log('plugin: ' + colors.yellow(err.plugin))
+  notifier.notify({ title: `${err.plugin}错误`, message: err.fileName || err.message })
   this.emit('end')
 }
 
 const srcFiles = {
-  js: ['src/**/*.js', 'src/**/*.wxs', '!src/lib/**'],
+  js: ['src/**/*.js', 'src/**/*.wxs'],
   style: ['src/**/*.less', 'src/**/*.wxss'],
   html: ['src/**/*.wxml'],
   other: ['src/**/*.json', 'src/**/*.{png,svg,jpg,jpeg}'],
@@ -44,6 +43,7 @@ const fileCopy = (src = srcFiles.other, dest = 'dist') => {
   return gulp
     .src(src, { base: 'src' })
     .pipe(changed(dest))
+    .on('error', handleError)
     .pipe(gulp.dest(dest))
 }
 
@@ -51,9 +51,10 @@ const wxmlCopy = (src = srcFiles.html, dest = 'dist') => {
   return gulp
     .src(src, { base: 'src' })
     .pipe(changed(dest))
+    .on('error', handleError)
     .pipe(
       px2rpx({
-        screenWidth: 750,
+        screenWidth: 375,
         wxappScreenWidth: 750,
       }),
     )
@@ -87,42 +88,10 @@ const buildJS = (src = srcFiles.js, dest = 'dist') => {
     .pipe(babel())
     .on('error', handleError)
     .pipe(miniProgram(settings))
+    .on('error', handleError)
     .pipe(gulpif(!settings.__DEV__, uglify()))
     .pipe(revertPath())
     .pipe(gulp.dest(dest))
-}
-
-const runWebpack = done => {
-  const webpackConfig = {
-    watch: settings.__DEV__,
-    target: 'node',
-    entry: {
-      index: path.resolve('src/lib/index.js'),
-    },
-    output: {
-      libraryTarget: 'umd',
-      library: 'lib',
-      filename: '[name].js',
-    },
-    plugins: [
-      new webpack.DefinePlugin({
-        'process.env.NODE_ENV': JSON.stringify(NODE_ENV),
-      })
-    ],
-    module: {
-      rules: [
-        { test: /\.js/, use: ['babel-loader'] },
-        { test: /\.json/, use: ['json-loader'] },
-      ],
-    },
-  }
-
-  gulp
-    .src('src/lib/index.js')
-    .pipe(gulpWebpack(webpackConfig, webpack))
-    .pipe(gulpif(!settings.__DEV__, uglify()))
-    .pipe(gulp.dest('dist/lib'))
-  done()
 }
 
 const lint = (src = srcFiles.js) => {
@@ -138,7 +107,6 @@ module.exports = {
   lessCompile,
   buildJS,
   wxmlCopy,
-  runWebpack,
   lint,
   srcFiles,
 }

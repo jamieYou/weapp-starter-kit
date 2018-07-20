@@ -1,4 +1,5 @@
-import { flow, autoBind } from '@lib'
+import { flow } from 'mobx'
+import autoBind from 'core-decorators/lib/autobind'
 
 export default function asyncAction(target, name, descriptor) {
   const oldAction = descriptor.value

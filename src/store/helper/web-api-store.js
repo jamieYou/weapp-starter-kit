@@ -1,5 +1,5 @@
 /* eslint-disable no-console */
-import { observable, toJS, computed } from '@lib'
+import { observable, toJS, computed } from 'mobx'
 import { StoreHelper } from './store-helper'
 
 export class WebAPIStore extends StoreHelper {

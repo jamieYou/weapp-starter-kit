@@ -1,4 +1,4 @@
-import { computed, action, observable, IObservableArray } from '@lib'
+import { computed, action, observable, IObservableArray } from 'mobx'
 import { WebAPIStore } from './web-api-store'
 import fetchAction from './fetch-action'
 

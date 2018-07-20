@@ -1,4 +1,6 @@
-import { flow, autoBind, _ } from '@lib'
+import { flow } from 'mobx'
+import _ from 'lodash'
+import autoBind from 'core-decorators/lib/autobind'
 import type { WebAPIStore } from './web-api-store'
 
 function fetchActionDecorator(target, name, descriptor, { bound = false, autoMerge = false, useFlow = false } = {}) {

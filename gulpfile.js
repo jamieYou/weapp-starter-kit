@@ -15,8 +15,6 @@ gulp.task('buildJsTask', () => config.buildJS())
 
 gulp.task('eslint', () => config.lint())
 
-gulp.task('webpack', config.runWebpack)
-
 // watch 监听
 gulp.task('watch', done => {
   gulp.watch(config.srcFiles.other, gulp.series(['copy-file']))
@@ -28,7 +26,7 @@ gulp.task('watch', done => {
 
 gulp.task(
   'dev',
-  gulp.series(['clean', 'buildJsTask', 'webpack', 'lessCompile', 'copy-file', 'copy-wxml', 'watch']),
+  gulp.series(['clean', 'buildJsTask', 'lessCompile', 'copy-file', 'copy-wxml', 'watch']),
 )
 
-gulp.task('build', gulp.series(['clean', 'buildJsTask', 'webpack', 'lessCompile', 'copy-file', 'copy-wxml']))
+gulp.task('build', gulp.series(['clean', 'buildJsTask', 'lessCompile', 'copy-file', 'copy-wxml']))

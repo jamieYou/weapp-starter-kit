@@ -8,7 +8,8 @@
             "last 2 versions",
             "safari >= 8"
           ]
-        }
+        },
+        "useBuiltIns": true
       }
     ],
     "stage-0",
@@ -28,6 +29,16 @@
           "@utils": "./src/utils"
         }
       }
-    ]
+    ],
+    [
+      "transform-runtime",
+      {
+        "helpers": false,
+        "polyfill": false,
+        "regenerator": true,
+        "moduleName": "babel-runtime"
+      }
+    ],
+    "./config/babel-mini-program"
   ]
 }

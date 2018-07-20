@@ -1,4 +1,5 @@
-import { autorun, isObservable, toJS, _ } from '@lib'
+import { autorun, isObservable, toJS } from 'mobx'
+import _ from 'lodash'
 import activate from './activate'
 
 export default function observer(options = {}, ...args) {
@@ -33,18 +34,16 @@ export default function observer(options = {}, ...args) {
       this.autoRunList = []
     },
 
-    onLoad() {
+    async init() {
       Object.defineProperty(this, 'props', propsDescriptor)
       Object.defineProperty(this, 'props', { value: this.props, writable: true })
-      if (this.props instanceof Promise) {
-        return this.props.then(result => {
-          this.props = result
-          this.setAutoRun()
-          onLoad && onLoad.call(this, this.options)
-        })
-      }
+      if (this.props instanceof Promise) this.props = await this.props
       this.setAutoRun()
-      onLoad && onLoad.call(this, this.options)
+      return onLoad && onLoad.call(this, this.options)
+    },
+
+    onLoad() {
+      return this.afterLoad = this.init()
     },
 
     onShow() {

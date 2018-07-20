@@ -1,60 +1,14 @@
 {
   "extends": [
-    "eslint:recommended",
-    "plugin:import/errors",
-    "plugin:import/warnings"
+    "beansmile"
   ],
-  "parser": "babel-eslint",
-  "parserOptions": {
-    "ecmaVersion": 6,
-    "sourceType": "module",
-    "ecmaFeatures": {
-      "jsx": true
-    }
-  },
-  "env": {
-    "es6": true,
-    "browser": true,
-    "node": true,
-    "mocha": true
-  },
   "rules": {
-    "eqeqeq": 2,
-    "quotes": [
-      1,
-      "single"
-    ],
-    "no-console": 1,
-    "no-debugger": 1,
-    "no-var": 2,
-    "no-trailing-spaces": 2,
-    "eol-last": 2,
-    "no-alert": 2,
-    "no-lone-blocks": 2,
-    "key-spacing": 2,
-    "comma-spacing": 2,
-    "space-infix-ops": 2,
-    "block-spacing": 2,
-    "computed-property-spacing": 2,
-    "func-call-spacing": 2,
-    "keyword-spacing": 2,
-    "switch-colon-spacing": 2,
-    "arrow-spacing": 2,
-    "rest-spread-spacing": 2,
-    "generator-star-spacing": [
+    "pathname/match-name": [
       2,
       {
-        "before": false,
-        "after": true
+        "matchIndex": false
       }
-    ],
-    "object-curly-spacing": [
-      2,
-      "always"
-    ],
-    "import/named": 0,
-    "import/no-duplicates": 2,
-    "import/no-unresolved": 0
+    ]
   },
   "globals": {
     "process.env": true,
@@ -62,6 +16,7 @@
     "wx": true,
     "getApp": true,
     "Page": true,
+    "Component": true,
     "getCurrentPages": true
   }
 }
