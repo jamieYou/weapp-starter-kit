@@ -9,19 +9,18 @@ module.exports = function runWebpack() {
     mode: NODE_ENV === 'development' ? 'development' : 'production',
     target: 'node',
     entry: {
-      index: path.resolve('src/lib.js'),
+      index: path.resolve('lib.js'),
     },
     output: {
       path: path.resolve('dist/lib'),
-      libraryTarget: 'umd',
-      library: 'lib',
+      libraryTarget: 'commonjs2',
       filename: '[name].js',
     },
     devtool: false,
     plugins: [
       new webpack.DefinePlugin({
         'process.env.NODE_ENV': JSON.stringify(NODE_ENV),
-      })
+      }),
     ],
     module: {
       rules: [

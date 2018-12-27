@@ -1,6 +1,6 @@
 const ignoreErrors = []
 
-async function loading(promise: Promise, title = '加载中', successMessage, failMessage, showLoading = true): Promise {
+async function loading(promise, title = '加载中', successMessage, failMessage, showLoading = true) {
   const mask = process.env.__DEV__
   try {
     showLoading && await wx.showLoading({ title, mask })
@@ -23,7 +23,7 @@ async function loading(promise: Promise, title = '加载中', successMessage, fa
 }
 
 function loadingDecorator({ title, successMessage, failMessage, showLoading } = {}) {
-  return function (target, name, descriptor: { value: (...any) => Promise }) {
+  return function (target, name, descriptor) {
     const func = descriptor.value
     descriptor.value = function () {
       return loading(func.apply(this, arguments), title, successMessage, failMessage, showLoading)

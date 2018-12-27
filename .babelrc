@@ -38,7 +38,6 @@
         "regenerator": true,
         "moduleName": "babel-runtime"
       }
-    ],
-    "./config/babel-mini-program"
+    ]
   ]
 }
