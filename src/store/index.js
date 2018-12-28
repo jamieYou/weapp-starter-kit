@@ -1,2 +1,2 @@
-export observer from './helper/observer'
+export observer from './observer/index'
 export { authStore } from './auth-store'

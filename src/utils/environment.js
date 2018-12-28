@@ -1,17 +1,13 @@
-const ipv4 = process.env.ipv4
-const NODE_ENV = process.env.NODE_ENV
-const PORT = process.env.PORT
-
 const environmentConfig = {
   development: {
-    apiOrigin: `http://${ipv4}:${PORT}`,
+    apiOrigin: process.env.API_URL,
   },
   staging: {
-    apiOrigin: `http://${ipv4}:${PORT}`,
+    apiOrigin: process.env.API_URL,
   },
   production: {
-    apiOrigin: `http://${ipv4}:${PORT}`,
+    apiOrigin: process.env.API_URL,
   },
 }
 
-export const { apiOrigin } = environmentConfig[NODE_ENV]
+export const { apiOrigin } = environmentConfig[process.env.NODE_ENV]

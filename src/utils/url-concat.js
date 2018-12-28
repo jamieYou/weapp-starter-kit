@@ -1,3 +1,3 @@
-export default function urlConcat(...args: string[]): string {
-  return args.map((str: string) => str.replace(/^\/|\/$/g, '')).join('/')
+export default function urlConcat(...args) {
+  return args.map(str => str.replace(/^\/|\/$/g, '')).join('/')
 }

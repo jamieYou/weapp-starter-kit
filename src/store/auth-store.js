@@ -1,14 +1,7 @@
+import { WebAPIStore } from 'mobx-multiple-store'
 import { fetch } from '@utils'
 
-export class AuthStore {
-  id: number
-  token: string
-  nickname: ?string
-  gender: ?string
-  avatar: ?string
-  loginResolve: Function
-  loginReject: Function
-
+export class AuthStore extends WebAPIStore {
   afterLogin = this.initLoginState()
 
   initLoginState() {
@@ -18,7 +11,7 @@ export class AuthStore {
     })
   }
 
-  async login(): Promise {
+  async login() {
     try {
       const { code } = await wx.login()
       const { data } = await fetch('login', { method: 'POST', data: { code } })
@@ -31,4 +24,4 @@ export class AuthStore {
   }
 }
 
-export const authStore: AuthStore = new AuthStore()
+export const authStore = new AuthStore()

@@ -24,7 +24,7 @@ wxApis.forEach(name => {
     throw new Error(`wx.${name} is not a function`)
   }
   Object.defineProperty(wx, name, {
-    value(options = {}): Promise {
+    value(options = {}) {
       return new Promise((resolve, reject) => {
         const { success, fail, complete } = options
         func({
