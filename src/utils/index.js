@@ -1,6 +1,3 @@
-import './wx-shim'
-
-export fetch from './fetch'
+export fly from './fly'
 export sleep from './sleep'
-export urlConcat from './url-concat'
 export autoLoading from './auto-loading'

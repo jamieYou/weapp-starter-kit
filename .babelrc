@@ -12,8 +12,7 @@
         "useBuiltIns": true
       }
     ],
-    "stage-0",
-    "flow"
+    "stage-0"
   ],
   "plugins": [
     "lodash",
@@ -28,15 +27,6 @@
           "@utils$": "./src/utils/index.js",
           "@utils": "./src/utils"
         }
-      }
-    ],
-    [
-      "transform-runtime",
-      {
-        "helpers": false,
-        "polyfill": false,
-        "regenerator": true,
-        "moduleName": "babel-runtime"
       }
     ]
   ]
