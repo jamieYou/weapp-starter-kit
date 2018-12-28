@@ -15,6 +15,7 @@ export default function fetch(pathname, options = {}) {
   const opts = Object.assign({}, defaultOptions, options)
 
   return wx[apiName]({ url: mergeUrl, ...opts }).then(res => {
+    res.isResponse = true
     const { statusCode } = res
     if (statusCode >= 200 && statusCode < 300) {
       return res

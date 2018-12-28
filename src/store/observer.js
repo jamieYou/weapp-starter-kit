@@ -1,6 +1,5 @@
 import { autorun, isObservable, toJS } from 'mobx'
 import _ from 'lodash'
-import activate from './activate'
 
 export default function observer(options = {}, ...args) {
   const { onLoad, onHide, onShow, onUnload } = options
@@ -63,4 +62,15 @@ export default function observer(options = {}, ...args) {
   }
 
   return Page(_.merge(options, ...args, observerOptions))
+}
+
+function activate(store) {
+  isObservable(store)
+  const descriptors = Object.getOwnPropertyDescriptors(store)
+  _.forEach(descriptors, (descriptor, name) => {
+    if (descriptor.get && !descriptor.enumerable) {
+      descriptor.enumerable = true
+      Object.defineProperty(store, name, descriptor)
+    }
+  })
 }
