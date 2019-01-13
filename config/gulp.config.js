@@ -4,7 +4,6 @@ const less = require('gulp-less')
 const gutil = require('gulp-util')
 const uglify = require('gulp-uglify')
 const rename = require('gulp-rename')
-const revertPath = require('gulp-revert-path')
 const eslint = require('gulp-eslint')
 const px2rpx = require('gulp-px2rpx')
 const gulpif = require('gulp-if')
@@ -13,6 +12,7 @@ const _ = require('lodash')
 const notifier = require('node-notifier')
 const { __DEV__, NODE_ENV, API_URL } = require('./env')
 const wxBabel = require('./gulp-wx-babel')
+const weapp = require('./gulp-weapp')
 
 const handleError = function (err) {
   const colors = gutil.colors
@@ -30,7 +30,6 @@ const takes_config = {
     ['src/**/*.json', 'src/**/*.{png,svg,jpg,jpeg}'],
     steam => steam
       .pipe(changed('dist'))
-      .on('error', handleError)
       .pipe(gulp.dest('dist'))
   ],
 
@@ -38,7 +37,6 @@ const takes_config = {
     'src/**/*.wxml',
     steam => steam
       .pipe(changed('dist'))
-      .on('error', handleError)
       .pipe(
         px2rpx({
           screenWidth: 375,
@@ -74,9 +72,24 @@ const takes_config = {
       .pipe(wxBabel({ NODE_ENV, API_URL, __DEV__ }))
       .on('error', handleError)
       .pipe(gulpif(!__DEV__, uglify()))
-      .pipe(revertPath())
       .pipe(gulp.dest('dist'))
   ],
+
+  weappParse: [
+    'src/**/*.weapp',
+    steam => steam
+      .pipe(changed('dist'))
+      .pipe(
+        px2rpx({
+          screenWidth: 375,
+          wxappScreenWidth: 750,
+        }),
+      )
+      .pipe(weapp())
+      .on('error', handleError)
+      .pipe(rename({ extname: '.wxml' }))
+      .pipe(gulp.dest('dist'))
+  ]
 }
 
 module.exports = function createConfig() {
