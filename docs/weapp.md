@@ -147,7 +147,7 @@ export class Demo extends WeApp {
 通过 this.props 可以到获取参数(页面里是当前的路由参数对象，组件里是传递进来的 properties)
 
 ## template
-`.weapp` 不兼容声明 template，可以从外部引入 `.wxml`
+`.weapp` 声明 template 的标签时，内部的标签内容不支持 `.weapp` 的语法，只能采用原生的语法
 
 `.weapp` 调用模版时的语法 `<template is="item" data="{{ {text: 'forbar'} }}"/>` 和 `.wxml` 调用模版时的语法 `<template is="item" data="{{text: 'forbar'}}"/>` 不同
 

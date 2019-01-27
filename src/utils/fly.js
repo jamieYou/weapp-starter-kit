@@ -12,7 +12,7 @@ fly.interceptors.response.use(
     return res
   },
   err => {
-    err.message = _.get(err.response.data, 'error', err.message)
+    err.message = _.get(err, 'response.data.error', err.message)
     return err
   })
 

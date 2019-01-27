@@ -21,7 +21,6 @@
       "module-resolver",
       {
         "alias": {
-          "@lib": "./src/lib/index.js",
           "@store$": "./src/store/index.js",
           "@store": "./src/store",
           "@utils$": "./src/utils/index.js",
