@@ -1,21 +1,24 @@
 import _ from 'lodash'
-import { autorun, action, createAtom, decorate, observable } from 'mobx'
+import { autorun, action, configure } from 'mobx'
+
+configure({ enforceActions: 'never' })
 
 export default class WeApp {
   $callbacks = []
-  $atom = createAtom('we_app_atom')
   $clears = []
+  $timer = null
 
   constructor($scope) {
     this.$scope = $scope
   }
 
   install() {
-    const clear = autorun(() => {
-      const callbacks = this.$callbacks.splice(0)
-      const callback = callbacks.length ? () => callbacks.forEach(cb => cb()) : void 0
-      this.$atom.reportObserved()
-      this.$scope.setData({ context: this.render() }, callback)
+    let clear = null
+    clear = autorun(() => {
+      clearTimeout(this.$timer)
+      const context = this.render()
+      if (clear) this.$timer = setTimeout(() => this.runRender(context), 0)
+      else this.runRender(context)
     })
     this.addClear(clear)
   }
@@ -24,10 +27,16 @@ export default class WeApp {
     this.$clears.forEach(cb => cb())
   }
 
+  runRender(context) {
+    const callbacks = this.$callbacks.splice(0)
+    const callback = callbacks.length ? () => callbacks.forEach(cb => cb()) : void 0
+    this.$scope.setData({ context }, callback)
+  }
+
+  @action
   update(obj, cb) {
     _.forEach(obj, (value, key) => _.set(this, key, value))
     cb && this.$callbacks.push(cb)
-    this.$atom.reportChanged()
   }
 
   addClear(cb) {
@@ -42,12 +51,11 @@ export default class WeApp {
     })
   }
 
+  wxParseText(text) {
+    return _.isNull(text) ? '' : text
+  }
+
   get props() {
     return this.$scope.options || this.$scope.properties
   }
 }
-
-decorate(WeApp, {
-  store: observable,
-  update: action,
-})

@@ -66,7 +66,7 @@ function each(child) {
         item.text = codes.map(value => {
           if (/^{{.+}}$/g.test(value)) {
             const { mustache, context_id } = parseContext(value)
-            results.push(`${context_id} = ${mustache}`)
+            results.push(`${context_id} = wxParseText(${mustache})`)
             return `{{${context_id}}}`
           }
           return value
@@ -76,6 +76,13 @@ function each(child) {
 
     return results
   }, [])
+}
+
+function parseWxs(wxml) {
+  const reg = /{%((?!{%).)+%}/g
+  return wxml.replace(reg, word => {
+    return word.replace(/{{/g, '').replace(/}}/g, '').replace(/{%/, '{{').replace(/%}/, '}}')
+  })
 }
 
 module.exports = function (file, wxml) {
@@ -92,5 +99,5 @@ module.exports = function (file, wxml) {
     path.join(dir, filename),
     result
   )
-  return json2html(json)
+  return parseWxs(json2html(json))
 }

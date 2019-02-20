@@ -1,5 +1,6 @@
 import _ from 'lodash'
-import { createAtom } from 'mobx'
+import { observable, decorate, isObservable } from 'mobx'
+import WeApp from './we-app'
 
 export function callOriginFunc(obj, key, args) {
   if (obj[key]) return obj[key](...args)
@@ -11,9 +12,33 @@ export function createMethod(obj, key) {
   })
 }
 
+export function getAllPrototypeDescriptors(Target) {
+  let descriptors = Object.getOwnPropertyDescriptors(Target.prototype)
+  let { prototype } = Target
+  while (prototype.__proto__ !== WeApp.prototype) {
+    descriptors = Object.assign({}, Object.getOwnPropertyDescriptors(prototype.__proto__), descriptors)
+    prototype = prototype.__proto__
+  }
+  return _.omit(descriptors, 'constructor')
+}
+
+function autoObservables(target) {
+  const obj = {}
+  _.forEach(
+    Object.getOwnPropertyDescriptors(target),
+    (descriptor, key) => {
+      if (!/^\$/.test(key) && typeof descriptor.value !== 'function' && !isObservable(descriptor.value)) {
+        obj[key] = observable
+      }
+    }
+  )
+  decorate(target, obj)
+}
+
 export const page_options = {
   onLoad() {
     this.weApp = new this.WeAppClass(this)
+    autoObservables(this.weApp)
     const result = callOriginFunc(this.weApp, 'onLoad', arguments)
     this.weApp.install()
     return result
@@ -27,23 +52,12 @@ export const page_options = {
 export const component_options = {
   lifetimes: {
     created() {
-      _.forEach(this.data.WeAppClass.properties, (v, key) => {
-        let output = this.properties[key]
-        const $atom = createAtom(`${key}_atom`)
-        Object.defineProperty(this.properties, key, {
-          get() {
-            $atom.reportObserved()
-            return output
-          },
-          set(input) {
-            if (output !== input) {
-              $atom.reportChanged()
-              output = input
-            }
-          }
-        })
-      })
+      decorate(
+        this.properties,
+        _.mapValues(this.data.WeAppClass.properties, () => observable.ref)
+      )
       this.weApp = new this.data.WeAppClass(this)
+      autoObservables(this.weApp)
       return callOriginFunc(this.weApp, 'created', arguments)
     },
     attached() {

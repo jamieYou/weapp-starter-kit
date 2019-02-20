@@ -94,51 +94,17 @@ export class Counter extends WeApp {
 ## 状态管理
 weapp 使用 mobx 做状态管理
 
-### 例子1, 自定义 observable 和自定义 action 结合
 ```
 import { WeApp, createPage } from '@weapp'
-import { action, observable } from 'mobx'
 
 @createPage(require)
 export class Demo extends WeApp {
-  @observable title = ''
+  title = '' // 自动注册为 observable
   
-  @action
   setTitle() {
+    // 两种修改数据的方法
     this.title = 'abc'
-  }
-}
-```
-
-### 例子2, 普通属性和强制更新方法(update)
-```
-import { WeApp, createPage } from '@weapp'
-
-@createPage(require)
-export class Demo extends WeApp {
-  title = ''
-  
-  setTitle() {
     this.update({ title: 'abc' }, ()=> {}) // 和 setData 类似，但是更新的目标是当前的 this
-  }
-}
-```
-
-### 例子3, 内置 observable
-```
-import { WeApp, createPage } from '@weapp'
-
-@createPage(require)
-export class Demo extends WeApp {
-  store = { title: '' } // 父类已经声明为 observable 对象, 不用手动装饰
-  
-  @action
-  setTitle1() {
-    this.store.title = 'abc'
-  }  
-  
-  setTitle2() {
-    this.update({ 'store.title': 'abc' }, ()=> {}) update 方法也可以更新 observable 对象
   }
 }
 ```
