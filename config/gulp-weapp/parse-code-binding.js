@@ -1,4 +1,4 @@
-const babel = require('babel-core')
+const babel = require('@babel/core')
 
 const g_list = ['Promise', 'Array', 'Object', 'Function', 'String', 'Number', 'Boolean', 'Symbol', 'module', 'wx']
 
@@ -16,7 +16,8 @@ function undeclaredVariable() {
 }
 
 module.exports = function parseCodeBinding(code) {
-  return babel.transform(code, {
+  return babel.transformSync(code, {
+    configFile: false,
     plugins: [undeclaredVariable]
   }).code
 }

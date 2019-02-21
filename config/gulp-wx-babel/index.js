@@ -2,39 +2,36 @@ const through = require('through2')
 const fs = require('fs-extra')
 const _ = require('lodash')
 const path = require('path')
-const babel = require('babel-core')
-const { babelrc, imports } = require('./babel-config')
+const PluginError = require('plugin-error')
+const babel = require('@babel/core')
+const { plugin, imports } = require('./babel-plugins')
 const runWebpack = require('./webpack-runner')
 
-function wxBabel(define) {
+function wxBabel() {
   return through.obj(
     function (file, encoding, cb) {
       if (file.isNull()) return cb(null, file)
 
-      try {
-        babelrc.plugins.push(
-          ['transform-define', _.mapKeys(define, (v, key) => `process.env.${key}`)]
-        )
-        const fileOpts = {
-          filename: file.path,
-          filenameRelative: file.relative,
-          sourceMap: Boolean(file.sourceMap),
-          sourceFileName: file.relative,
-          sourceMapTarget: file.relative
-        }
-        const { code } = babel.transform(file.contents.toString(), {
-          ...babelrc,
-          ...fileOpts,
-        })
-
-        file.contents = Buffer.from(code, 'utf-8')
-        this.push(file)
-        cb()
-      } catch (err) {
-        err.fileName = file.path
-        err.plugin = 'gulp-wx-babel'
-        this.emit('error', err)
+      const opts = {
+        filename: file.path,
+        filenameRelative: file.relative,
+        sourceMap: Boolean(file.sourceMap),
+        sourceFileName: file.relative,
+        plugins: [plugin]
       }
+
+      babel.transformAsync(file.contents.toString(), opts)
+        .then(res => {
+          file.contents = Buffer.from(res.code, 'utf-8')
+          this.push(file)
+        })
+        .catch(err => {
+          this.emit('error', new PluginError('gulp-wx-babel', err, {
+            fileName: file.path,
+            showProperties: true
+          }))
+        })
+        .finally(cb)
     },
 
     async function (cb) {
@@ -69,5 +66,4 @@ function addCodeInLib() {
   fs.writeFileSync(p, `new Function('return this')().__proto__ = this;${code}`)
 }
 
-// exporting the plugin
 module.exports = wxBabel
