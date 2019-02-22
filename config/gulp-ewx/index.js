@@ -11,7 +11,7 @@ module.exports = function () {
         cb()
       } catch (err) {
         err.fileName = file.path
-        err.plugin = 'gulp-weapp'
+        err.plugin = 'gulp-ewx'
         this.emit('error', err)
       }
     }

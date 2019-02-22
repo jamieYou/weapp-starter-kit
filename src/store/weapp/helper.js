@@ -24,20 +24,18 @@ export function getAllPrototypeDescriptors(Target) {
 
 function autoObservables(target) {
   const obj = {}
-  _.forEach(
-    Object.getOwnPropertyDescriptors(target),
-    (descriptor, key) => {
-      if (!/^\$/.test(key) && typeof descriptor.value !== 'function' && !isObservable(descriptor.value)) {
-        obj[key] = observable
-      }
+  Object.keys(target).forEach(key => {
+    const descriptor = Object.getOwnPropertyDescriptor(target, key)
+    if (!/^(\$|_)/.test(key) && typeof descriptor.value !== 'function' && !isObservable(descriptor.value)) {
+      obj[key] = observable
     }
-  )
+  })
   decorate(target, obj)
 }
 
 export const page_options = {
   onLoad() {
-    this.weApp = new this.WeAppClass(this)
+    this.weApp = new this.data.$WeAppClass(this)
     autoObservables(this.weApp)
     const result = callOriginFunc(this.weApp, 'onLoad', arguments)
     this.weApp.install()
@@ -54,9 +52,9 @@ export const component_options = {
     created() {
       decorate(
         this.properties,
-        _.mapValues(this.data.WeAppClass.properties, () => observable.ref)
+        _.mapValues(this.data.$WeAppClass.properties, () => observable.ref)
       )
-      this.weApp = new this.data.WeAppClass(this)
+      this.weApp = new this.data.$WeAppClass(this)
       autoObservables(this.weApp)
       return callOriginFunc(this.weApp, 'created', arguments)
     },

@@ -6,10 +6,10 @@ function createPageWeApp(PageClass, target_require) {
   const func_list = {}
   _.forEach(descriptors, (descriptor, key) => 'value' in descriptor && createMethod(func_list, key))
 
-  PageClass.prototype.render = target_require('./weapp-render.js')
+  PageClass.prototype.render = target_require('./ewx-render.js')
 
   Page(
-    Object.assign({ WeAppClass: PageClass }, func_list, page_options)
+    Object.assign({ data: { $WeAppClass: PageClass } }, func_list, page_options)
   )
 }
 
@@ -42,10 +42,10 @@ function createComponentWeApp(ComponentClass, target_require) {
     _.pick(ComponentClass, 'properties', 'externalClasses', 'options')
   )
 
-  ComponentClass.prototype.render = target_require('./weapp-render.js')
+  ComponentClass.prototype.render = target_require('./ewx-render.js')
 
   Component(
-    _.merge({ data: { WeAppClass: ComponentClass } }, obj, component_options)
+    _.merge({ data: { $WeAppClass: ComponentClass } }, obj, component_options)
   )
 }
 

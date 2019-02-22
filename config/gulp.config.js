@@ -13,7 +13,7 @@ const notifier = require('node-notifier')
 const { __DEV__ } = require('./env')
 const babel = require('gulp-babel')
 const wxBabel = require('./gulp-wx-babel')
-const weapp = require('./gulp-weapp')
+const ewx = require('./gulp-ewx')
 
 const handleError = function (err) {
   const colors = gutil.colors
@@ -77,8 +77,8 @@ const takes_config = {
       .pipe(gulp.dest('dist'))
   ],
 
-  weappParse: [
-    'src/**/*.weapp',
+  ewxParse: [
+    'src/**/*.ewx',
     steam => steam
       .pipe(changed('dist'))
       .pipe(
@@ -87,7 +87,7 @@ const takes_config = {
           wxappScreenWidth: 750,
         }),
       )
-      .pipe(weapp())
+      .pipe(ewx())
       .on('error', handleError)
       .pipe(rename({ extname: '.wxml' }))
       .pipe(gulp.dest('dist'))

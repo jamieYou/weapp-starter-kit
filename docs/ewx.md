@@ -1,4 +1,4 @@
-# weapp 体验版文档
+# ewx 体验版文档
 
 ## 功能说明
 1. page、component 的声明方式修改为 class
@@ -47,7 +47,7 @@ export class Demo extends WeApp {
 ```
 
 ```
-// demo.weapp -> 使用 .weapp, 而不是 .wxml
+// demo.ewx -> 使用 .ewx, 而不是 .wxml
 <view bindtap="handle">{{ getFullTitle() }}</view>
 ```
 
@@ -113,12 +113,12 @@ export class Demo extends WeApp {
 通过 this.props 可以到获取参数(页面里是当前的路由参数对象，组件里是传递进来的 properties)
 
 ## template
-`.weapp` 声明 template 的标签时，内部的标签内容不支持 `.weapp` 的语法，只能采用原生的语法
+`.ewx` 声明 template 的标签时，内部的标签内容不支持 `.ewx` 的语法，只能采用原生的语法
 
-`.weapp` 调用模版时的语法 `<template is="item" data="{{ {text: 'forbar'} }}"/>` 和 `.wxml` 调用模版时的语法 `<template is="item" data="{{text: 'forbar'}}"/>` 不同
+`.ewx` 调用模版时的语法 `<template is="item" data="{{ {text: 'forbar'} }}"/>` 和 `.wxml` 调用模版时的语法 `<template is="item" data="{{text: 'forbar'}}"/>` 不同
 
 ## 要点
-1. 每次进入页面、初始化组件时，都会重新 new class
+1. 创建页面、初始化组件时，都会重新 new class
 2. class 里面没有内置的 data、setData 功能
 3. 通过 this.$scope 获取原来的页面、组件实例对象
-4. `.weapp` 不兼容 include
+4. `.ewx` 不兼容 include

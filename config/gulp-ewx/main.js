@@ -94,7 +94,7 @@ module.exports = function (file, wxml) {
   )
   const result = prettier.format(render, { parser: 'babylon' })
   const dir = path.dirname(file.path).replace(path.resolve('src'), path.resolve('dist'))
-  const filename = 'weapp-render.js'
+  const filename = 'ewx-render.js'
   fs.outputFileSync(
     path.join(dir, filename),
     result
