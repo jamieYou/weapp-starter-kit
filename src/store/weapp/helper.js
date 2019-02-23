@@ -35,7 +35,8 @@ function autoObservables(target) {
 
 export const page_options = {
   onLoad() {
-    this.weApp = new this.data.$WeAppClass(this)
+    const $WeAppClass = this.get$WeAppClass()
+    this.weApp = new $WeAppClass(this)
     autoObservables(this.weApp)
     const result = callOriginFunc(this.weApp, 'onLoad', arguments)
     this.weApp.install()
@@ -50,11 +51,12 @@ export const page_options = {
 export const component_options = {
   lifetimes: {
     created() {
+      const $WeAppClass = this.get$WeAppClass()
       decorate(
         this.properties,
-        _.mapValues(this.data.$WeAppClass.properties, () => observable.ref)
+        _.mapValues($WeAppClass.properties, () => observable.ref)
       )
-      this.weApp = new this.data.$WeAppClass(this)
+      this.weApp = new $WeAppClass(this)
       autoObservables(this.weApp)
       return callOriginFunc(this.weApp, 'created', arguments)
     },

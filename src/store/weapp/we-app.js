@@ -6,20 +6,13 @@ configure({ enforceActions: 'never' })
 export default class WeApp {
   $callbacks = []
   $clears = []
-  $timer = null
 
   constructor($scope) {
     this.$scope = $scope
   }
 
   install() {
-    let clear = null
-    clear = autorun(() => {
-      clearTimeout(this.$timer)
-      const context = this.render()
-      if (clear) this.$timer = setTimeout(() => this.runRender(context), 0)
-      else this.runRender(context)
-    })
+    const clear = autorun(() => this.runRender(), { delay: 1 })
     this.addClear(clear)
   }
 
@@ -27,10 +20,10 @@ export default class WeApp {
     this.$clears.forEach(cb => cb())
   }
 
-  runRender(context) {
+  runRender() {
     const callbacks = this.$callbacks.splice(0)
     const callback = callbacks.length ? () => callbacks.forEach(cb => cb()) : void 0
-    this.$scope.setData({ context }, callback)
+    this.$scope.setData({ context: this.render() }, callback)
   }
 
   @action

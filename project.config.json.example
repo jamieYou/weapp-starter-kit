@@ -11,7 +11,7 @@
 	"compileType": "miniprogram",
 	"libVersion": "2.0.0",
 	"appid": "touristappid",
-	"projectname": "mini-program-starter-kit",
+	"projectname": "weapp-starter-kit",
 	"condition": {
 		"search": {
 			"current": -1,

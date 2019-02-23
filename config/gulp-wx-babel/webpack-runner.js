@@ -1,34 +1,9 @@
-const path = require('path')
 const ora = require('ora')
 const chalk = require('chalk')
 const webpack = require('webpack')
+const config = require('../../webpack.config')
 
 module.exports = function runWebpack() {
-  const NODE_ENV = process.env.NODE_ENV || 'development'
-  const config = {
-    mode: NODE_ENV === 'development' ? 'development' : 'production',
-    target: 'node',
-    entry: {
-      index: path.resolve('lib.js'),
-    },
-    output: {
-      path: path.resolve('dist/lib'),
-      libraryTarget: 'commonjs2',
-      filename: '[name].js',
-    },
-    devtool: false,
-    plugins: [
-      new webpack.DefinePlugin({
-        'process.env.NODE_ENV': JSON.stringify(NODE_ENV),
-      }),
-    ],
-    module: {
-      rules: [
-        { test: /\.js$/, use: ['babel-loader'], exclude: /node_modules/ },
-      ],
-    },
-  }
-
   return new Promise((resolve, reject) => {
     const spinner = ora('building...')
     spinner.start()

@@ -9,7 +9,7 @@ function createPageWeApp(PageClass, target_require) {
   PageClass.prototype.render = target_require('./ewx-render.js')
 
   Page(
-    Object.assign({ data: { $WeAppClass: PageClass } }, func_list, page_options)
+    Object.assign({ get$WeAppClass: () => PageClass }, func_list, page_options)
   )
 }
 
@@ -44,8 +44,10 @@ function createComponentWeApp(ComponentClass, target_require) {
 
   ComponentClass.prototype.render = target_require('./ewx-render.js')
 
+  obj.methods.get$WeAppClass = () => ComponentClass
+
   Component(
-    _.merge({ data: { $WeAppClass: ComponentClass } }, obj, component_options)
+    _.merge({}, obj, component_options)
   )
 }
 
