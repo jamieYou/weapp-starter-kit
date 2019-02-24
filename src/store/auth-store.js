@@ -1,5 +1,5 @@
 import { WebAPIStore } from 'mobx-multiple-store'
-import { fly } from '@utils'
+import { fly } from '@/utils'
 
 export class AuthStore extends WebAPIStore {
   async login() {

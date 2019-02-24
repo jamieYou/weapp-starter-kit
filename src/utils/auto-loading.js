@@ -1,44 +1,49 @@
-const ignoreErrors = []
+import _ from 'lodash'
 
-async function loading(promise, title = '加载中', successMessage, failMessage, showLoading = true) {
-  const mask = process.env.__DEV__
-  try {
-    showLoading && await wx.showLoading({ title, mask })
-    const res = await promise
-    wx.hideLoading()
-    if (successMessage) wx.showToast({ title: successMessage, icon: 'success' })
-    return res
-  } catch (err) {
-    wx.hideLoading()
-    if (!ignoreErrors.includes(err.message))
-      wx.showModal({
-        title: '错误',
-        content: failMessage || err.message,
-        showCancel: false,
-        confirmColor: '#E0B44F',
-        confirmText: '知道了',
-      })
-    throw err
-  }
+const ignoreErrors = ['cancel']
+
+async function loading(target, title = '加载中', retry = _.get(this, 'retry', false)) {
+  await wxp.showLoading({ title, mask: true })
+  const action = Promise.resolve(target instanceof Function ? target() : target)
+
+  return action
+    .finally(wxp.hideLoading)
+    .catch(err => {
+      const msg = err.message
+      if (!ignoreErrors.includes(msg)) {
+        wxp.showModal({
+          title: '错误',
+          content: msg,
+          showCancel: retry,
+          confirmColor: '#E0B44F',
+          confirmText: retry ? '重新加载' : '知道了',
+        }).then(res => {
+          if (res.confirm && retry) loading(...arguments)
+        })
+      }
+      throw err
+    })
 }
 
-function loadingDecorator({ title, successMessage, failMessage, showLoading } = {}) {
+function loadingDecorator({ title, retry = _.get(this, 'retry') } = {}) {
   return function (target, name, descriptor) {
     const func = descriptor.value
     descriptor.value = function () {
-      return loading(func.apply(this, arguments), title, successMessage, failMessage, showLoading)
+      return loading(() => func.apply(this, arguments), title, retry)
     }
-    descriptor.enumerable = true
-    return descriptor
   }
 }
 
 export default function autoLoading(...args) {
-  if (args[0] instanceof Promise) {
-    return loading(...args)
+  if (args[0] instanceof Promise || args[0] instanceof Function) {
+    return loading.call(this, ...args)
   } else if (args.length === 3) {
-    return loadingDecorator()(...args)
+    return loadingDecorator.call(this)(...args)
   } else {
-    return loadingDecorator(args[0])
+    return loadingDecorator.call(this, args[0])
   }
+}
+
+autoLoading.retry = function () {
+  return autoLoading.apply({ retry: true }, arguments)
 }

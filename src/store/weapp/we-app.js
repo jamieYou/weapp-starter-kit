@@ -6,20 +6,14 @@ configure({ enforceActions: 'never' })
 export default class WeApp {
   $callbacks = []
   $clears = []
-  $timer = null
+  $ewx_handle_count = 0
 
   constructor($scope) {
     this.$scope = $scope
   }
 
   install() {
-    let clear = null
-    clear = autorun(() => {
-      clearTimeout(this.$timer)
-      const context = this.render()
-      if (clear) this.$timer = setTimeout(() => this.runRender(context), 0)
-      else this.runRender(context)
-    })
+    const clear = autorun(() => this.runRender(), { delay: 1 })
     this.addClear(clear)
   }
 
@@ -27,10 +21,12 @@ export default class WeApp {
     this.$clears.forEach(cb => cb())
   }
 
-  runRender(context) {
+  runRender() {
     const callbacks = this.$callbacks.splice(0)
     const callback = callbacks.length ? () => callbacks.forEach(cb => cb()) : void 0
-    this.$scope.setData({ context }, callback)
+    this.resetHandleName()
+    const $ctx = this.render()
+    this.$scope.setData(this.getUpdateContext($ctx, this.$scope.data.$ctx), callback)
   }
 
   @action
@@ -43,7 +39,7 @@ export default class WeApp {
     this.$clears.push(cb)
   }
 
-  wxForEach(list, cb) {
+  ewxForEach(list, cb) {
     return _.map(list, (value, key) => {
       const context = {}
       cb(value, key, context)
@@ -51,8 +47,38 @@ export default class WeApp {
     })
   }
 
-  wxParseText(text) {
+  ewxParseText(text) {
     return _.isNull(text) ? '' : text
+  }
+
+  ewxParseEvent(handle) {
+    if (typeof handle === 'function') {
+      const path = this.getHandleName()
+      _.set(this.$scope, path, handle.bind(this))
+      return path
+    }
+    return handle
+  }
+
+  getUpdateContext(newContext, oldContext) {
+    if (oldContext) {
+      const obj = {}
+      _.forEach(newContext, (value, key) => {
+        if (value !== oldContext[key]) obj[`$ctx.${key}`] = value
+      })
+      return obj
+    } else {
+      return { $ctx: newContext }
+    }
+  }
+
+  getHandleName() {
+    this.$ewx_handle_count++
+    return '$handle_' + this.$ewx_handle_count.toString(16)
+  }
+
+  resetHandleName() {
+    this.$ewx_handle_count = 0
   }
 
   get props() {

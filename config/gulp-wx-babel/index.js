@@ -17,12 +17,13 @@ function wxBabel() {
         filenameRelative: file.relative,
         sourceMap: Boolean(file.sourceMap),
         sourceFileName: file.relative,
-        plugins: [plugin]
+        configFile: false,
+        plugins: [plugin],
       }
 
       babel.transformAsync(file.contents.toString(), opts)
         .then(res => {
-          file.contents = Buffer.from(res.code, 'utf-8')
+          file.contents = Buffer.from(res.code.replace(/"use strict";/g, ''), 'utf-8')
           this.push(file)
         })
         .catch(err => {
@@ -38,17 +39,11 @@ function wxBabel() {
       if (!imports.hasNewImports) return cb()
       try {
         let str = ''
-        await Promise.all(_.map(imports.myImports, async ({ name }, source) => {
-          str += `exports.${name} = require('${source}');`
-          const sourcePath = path.resolve(`dist/lib/${source}.js`)
-          const libPath = path.relative(path.dirname(sourcePath), path.resolve('dist/lib/index.js'))
-          const file = `module.exports=require('${libPath}').${name}`
-          await fs.outputFile(sourcePath, file)
-        }))
+        _.forEach(imports.myImports, ({ name }, source) => str += `exports.${name} = require('${source}');`)
         await fs.writeFile(path.resolve('lib.js'), str)
         await runWebpack()
         imports.hasNewImports = false
-        addCodeInLib()
+        // addCodeInLib()
         cb()
       } catch (err) {
         err.plugin = 'gulp-wx-babel'
@@ -61,7 +56,7 @@ function wxBabel() {
 }
 
 function addCodeInLib() {
-  const p = path.resolve('dist/lib/index.js')
+  const p = path.resolve('dist/lib.js')
   const code = fs.readFileSync(p, 'utf-8')
   fs.writeFileSync(p, `new Function('return this')().__proto__ = this;${code}`)
 }

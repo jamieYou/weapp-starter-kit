@@ -1,7 +1,14 @@
 const _ = require('lodash')
 
-function randomString() {
-  return 'c' + Math.random().toString(36).substr(2, 5)
+let var_name_count = 0
+
+function getVarName() {
+  var_name_count++
+  return 'var_' + var_name_count.toString(16)
+}
+
+function resetVarName() {
+  var_name_count = 0
 }
 
 function parseMustache(str = '') {
@@ -34,12 +41,14 @@ function joinMustache(str) {
 }
 
 function parseContext(str) {
+  const var_name = getVarName()
   const mustache = joinMustache(str) || void 0
-  const context_id = mustache ? `context.${randomString()}` : void 0
-  return { mustache, context_id }
+  const context_id = mustache ? `$ctx.${var_name}` : void 0
+  return { mustache, context_id, var_name }
 }
 
 module.exports = {
   parseMustache,
   parseContext,
+  resetVarName,
 }

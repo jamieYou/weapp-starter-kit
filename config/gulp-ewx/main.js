@@ -4,7 +4,7 @@ const { html2json, json2html } = require('html2json')
 const _ = require('lodash')
 const { minify } = require('html-minifier')
 const prettier = require('prettier')
-const { parseContext, parseMustache } = require('./parse-mustache')
+const { parseContext, parseMustache, resetVarName } = require('./parse-mustache')
 const parseCodeBinding = require('./parse-code-binding')
 
 function instructRender(attr = {}, tag_name) {
@@ -29,10 +29,10 @@ function instructRender(attr = {}, tag_name) {
     attr['wx:for'] = `{{${context_id}}}`
     render = _.template(
       render({
-        code: `${context_id} = wxForEach(${mustache}, (${item_name}, ${index_name}, context)=> { <%= code %> })`
+        code: `${context_id} = ewxForEach(${mustache}, (${item_name}, ${index_name}, $ctx)=> { <%= code %> })`
       })
     )
-    attr['wx:for-item'] = 'context'
+    attr['wx:for-item'] = '$ctx'
   }
 
   const other_props = _.omit(attr, ['wx:if', 'wx:elif', 'wx:else', 'wx:for', 'wx:for-item', 'wx:for-index'])
@@ -44,6 +44,8 @@ function instructRender(attr = {}, tag_name) {
       if (mustache) {
         if (tag_name === 'template' && key === 'data') attr[key] = `{{...${context_id}}}`
         else attr[key] = `{{${context_id}}}`
+
+        if (isEvent(key)) return `${context_id} = ewxParseEvent(${mustache})`
         return `${context_id} = ${mustache}`
       }
       return ''
@@ -66,7 +68,7 @@ function each(child) {
         item.text = codes.map(value => {
           if (/^{{.+}}$/g.test(value)) {
             const { mustache, context_id } = parseContext(value)
-            results.push(`${context_id} = wxParseText(${mustache})`)
+            results.push(`${context_id} = ewxParseText(${mustache})`)
             return `{{${context_id}}}`
           }
           return value
@@ -78,6 +80,10 @@ function each(child) {
   }, [])
 }
 
+function isEvent(attr_key) {
+  return /^(bind|catch|capture-bind|capture-catch)/i.test(attr_key)
+}
+
 function parseWxs(wxml) {
   const reg = /{%((?!{%).)+%}/g
   return wxml.replace(reg, word => {
@@ -85,12 +91,17 @@ function parseWxs(wxml) {
   })
 }
 
+function waitContext(wxml) {
+  return `<block wx:if="{{$ctx}}">${wxml}</block>`
+}
+
 module.exports = function (file, wxml) {
+  resetVarName()
   const html = minify(wxml, { removeComments: true, keepClosingSlash: true })
   const json = html2json(html)
   const code = each(json.child).join(';')
   const render = parseCodeBinding(
-    `module.exports = function render(){const context = {}; ${code}; return context }`
+    `module.exports = function render(){const $ctx = {}; ${code}; return $ctx }`
   )
   const result = prettier.format(render, { parser: 'babylon' })
   const dir = path.dirname(file.path).replace(path.resolve('src'), path.resolve('dist'))
@@ -99,5 +110,5 @@ module.exports = function (file, wxml) {
     path.join(dir, filename),
     result
   )
-  return parseWxs(json2html(json))
+  return waitContext(parseWxs(json2html(json)))
 }

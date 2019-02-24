@@ -1,5 +1,5 @@
 import _ from 'lodash'
-import { observable, decorate, isObservable } from 'mobx'
+import { observable, decorate, isObservable, createAtom } from 'mobx'
 import WeApp from './we-app'
 
 export function callOriginFunc(obj, key, args) {
@@ -35,7 +35,8 @@ function autoObservables(target) {
 
 export const page_options = {
   onLoad() {
-    this.weApp = new this.data.$WeAppClass(this)
+    const $WeAppClass = this.get$WeAppClass()
+    this.weApp = new $WeAppClass(this)
     autoObservables(this.weApp)
     const result = callOriginFunc(this.weApp, 'onLoad', arguments)
     this.weApp.install()
@@ -50,11 +51,28 @@ export const page_options = {
 export const component_options = {
   lifetimes: {
     created() {
-      decorate(
-        this.properties,
-        _.mapValues(this.data.$WeAppClass.properties, () => observable.ref)
-      )
-      this.weApp = new this.data.$WeAppClass(this)
+      const $WeAppClass = this.get$WeAppClass()
+      // decorate(
+      //   this.properties,
+      //   _.mapValues($WeAppClass.properties, () => observable.ref)
+      // )
+      _.forEach($WeAppClass.properties, (v, key) => {
+        let output = this.properties[key]
+        const $atom = createAtom(`${key}_atom`)
+        Object.defineProperty(this.properties, key, {
+          get() {
+            $atom.reportObserved()
+            return output
+          },
+          set(input) {
+            if (!_.isEqual(output, input)) {
+              $atom.reportChanged()
+              output = input
+            }
+          }
+        })
+      })
+      this.weApp = new $WeAppClass(this)
       autoObservables(this.weApp)
       return callOriginFunc(this.weApp, 'created', arguments)
     },
