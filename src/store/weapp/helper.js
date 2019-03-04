@@ -2,10 +2,6 @@ import _ from 'lodash'
 import { observable, decorate, isObservable, createAtom } from 'mobx'
 import WeApp from './we-app'
 
-export function callOriginFunc(obj, key, args) {
-  if (obj[key]) return obj[key](...args)
-}
-
 export function createMethod(obj, key) {
   _.set(obj, key, function () {
     return this.weApp[key](...arguments)
@@ -20,6 +16,10 @@ export function getAllPrototypeDescriptors(Target) {
     prototype = prototype.__proto__
   }
   return _.omit(descriptors, 'constructor')
+}
+
+function callOriginFunc(obj, key, args) {
+  if (obj[key]) return obj[key](...args)
 }
 
 function autoObservables(target) {
@@ -52,10 +52,6 @@ export const component_options = {
   lifetimes: {
     created() {
       const $WeAppClass = this.get$WeAppClass()
-      // decorate(
-      //   this.properties,
-      //   _.mapValues($WeAppClass.properties, () => observable.ref)
-      // )
       _.forEach($WeAppClass.properties, (v, key) => {
         let output = this.properties[key]
         const $atom = createAtom(`${key}_atom`)
@@ -72,13 +68,14 @@ export const component_options = {
           }
         })
       })
-      this.weApp = new $WeAppClass(this)
-      autoObservables(this.weApp)
-      return callOriginFunc(this.weApp, 'created', arguments)
     },
     attached() {
+      const $WeAppClass = this.get$WeAppClass()
+      this.weApp = new $WeAppClass(this)
+      autoObservables(this.weApp)
+      callOriginFunc(this.weApp, 'created', arguments)
+      callOriginFunc(this.weApp, 'attached', arguments)
       this.weApp.install()
-      return callOriginFunc(this.weApp, 'attached', arguments)
     },
     detached() {
       this.weApp.uninstall()

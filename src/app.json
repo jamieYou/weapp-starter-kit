@@ -1,6 +1,6 @@
 {
   "pages": [
-    "pages/home/home"
+    "pages/ewx-demo/ewx-demo"
   ],
   "window": {
     "backgroundTextStyle": "light",

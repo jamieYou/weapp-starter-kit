@@ -58,3 +58,4 @@ process.env.NODE_ENV
 
 ### mobx 使用
 [参考 ewx 文档](docs/ewx.md)
+[ewx 和 mobx 结合开发建议](docs/mobx.md)
