@@ -56,6 +56,8 @@ process.env.NODE_ENV
 ## ewx 模板引擎
 [参考 ewx 文档](docs/ewx.md)
 
-### mobx 使用
+## mobx 使用
 [参考 ewx 文档](docs/ewx.md)
 [ewx 和 mobx 结合开发建议](docs/mobx.md)
+
+## [快速生成页面、组件模版](docs/wx-template.md)

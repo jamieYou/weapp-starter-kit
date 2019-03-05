@@ -10,29 +10,25 @@ const parseCodeBinding = require('./parse-code-binding')
 function instructRender(attr = {}, tag_name) {
   let render = _.template('<%= code %>')
 
-  if (attr['wx:if']) {
-    const { mustache = JSON.parse(attr['wx:if']), context_id } = parseContext(attr['wx:if'])
-    attr['wx:if'] = `{{${context_id}}}`
-    render = _.template(`if(${context_id} = ${mustache}) { <%= code %> }`)
-  } else if (attr['wx:elif']) {
-    const { mustache = JSON.parse(attr['wx:elif']), context_id } = parseContext(attr['wx:elif'])
-    attr['wx:elif'] = `{{${context_id}}}`
-    render = _.template(`else if(${context_id} = ${mustache}) { <%= code %> }`)
-  } else if (attr['wx:else']) {
-    render = _.template('else { <%= code %> }')
-  }
-
   if (attr['wx:for']) {
     const item_name = _.get(attr, 'wx:for-item', 'item')
     const index_name = _.get(attr, 'wx:for-index', 'index')
     const { mustache = JSON.parse(attr['wx:for']), context_id } = parseContext(attr['wx:for'])
     attr['wx:for'] = `{{${context_id}}}`
-    render = _.template(
-      render({
-        code: `${context_id} = ewxForEach(${mustache}, (${item_name}, ${index_name}, $ctx)=> { <%= code %> })`
-      })
-    )
+    render = _.template(`${context_id} = ewxForEach(${mustache}, (${item_name}, ${index_name}, $ctx)=> { <%= code %> })`)
     attr['wx:for-item'] = '$ctx'
+  }
+
+  if (attr['wx:if']) {
+    const { mustache = JSON.parse(attr['wx:if']), context_id } = parseContext(attr['wx:if'])
+    attr['wx:if'] = `{{${context_id}}}`
+    render = _.template(render({ code: `if(${context_id} = ${mustache}) { <%= code %> }` }))
+  } else if (attr['wx:elif']) {
+    const { mustache = JSON.parse(attr['wx:elif']), context_id } = parseContext(attr['wx:elif'])
+    attr['wx:elif'] = `{{${context_id}}}`
+    render = _.template(`else if(${context_id} = ${mustache}) { <%= code %> }`)
+  } else if ('wx:else' in attr) {
+    render = _.template('else { <%= code %> }')
   }
 
   const other_props = _.omit(attr, ['wx:if', 'wx:elif', 'wx:else', 'wx:for', 'wx:for-item', 'wx:for-index'])
@@ -56,12 +52,20 @@ function instructRender(attr = {}, tag_name) {
 function each(child) {
   return child.reduce((results, item) => {
     if (item.node === 'element') {
-      const { render, codes } = instructRender(item.attr, item.tag)
-      if (item.child && item.tag !== 'template') {
-        codes.push(...each(item.child))
+      if (item.tag === 'script') {
+        results.push(item.child.map(v => v.text))
+        delete item.tag
+        delete item.child
+        item.node = 'text'
+        item.text = ''
+      } else {
+        const { render, codes } = instructRender(item.attr, item.tag)
+        if (item.child && item.tag !== 'template') {
+          codes.push(...each(item.child))
+        }
+        const result = render({ code: codes.join('\n') })
+        results.push(result)
       }
-      const result = render({ code: codes.join(';') })
-      results.push(result)
     } else {
       const codes = parseMustache(item.text)
       if (codes.length) {

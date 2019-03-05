@@ -18,6 +18,6 @@ function undeclaredVariable() {
 module.exports = function parseCodeBinding(code) {
   return babel.transformSync(code, {
     configFile: false,
-    plugins: [undeclaredVariable]
+    plugins: ['@babel/plugin-proposal-optional-chaining', undeclaredVariable]
   }).code
 }

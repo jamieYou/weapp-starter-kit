@@ -2037,6 +2037,11 @@ commander@2.17.x, commander@~2.17.1:
   resolved "http://registry.npm.taobao.org/commander/download/commander-2.17.1.tgz#bd77ab7de6de94205ceacc72f1716d29f20a77bf"
   integrity sha1-vXerfebelCBc6sxy8XFtKfIKd78=
 
+commander@^2.19.0:
+  version "2.19.0"
+  resolved "http://registry.npm.taobao.org/commander/download/commander-2.19.0.tgz#f6198aa84e5b83c46054b94ddedbfed5ee9ff12a"
+  integrity sha1-9hmKqE5bg8RgVLlN3tv+1e6f8So=
+
 commondir@^1.0.1:
   version "1.0.1"
   resolved "http://registry.npm.taobao.org/commondir/download/commondir-1.0.1.tgz#ddd800da0c66127393cca5950ea968a3aaf1253b"
@@ -4130,6 +4135,11 @@ jsonfile@^4.0.0:
   optionalDependencies:
     graceful-fs "^4.1.6"
 
+jsonfile@~1.1.0:
+  version "1.1.1"
+  resolved "http://registry.npm.taobao.org/jsonfile/download/jsonfile-1.1.1.tgz#da4fd6ad77f1a255203ea63c7bc32dc31ef64433"
+  integrity sha1-2k/WrXfxolUgPqY8e8Mtwx72RDM=
+
 jsonify@~0.0.0:
   version "0.0.0"
   resolved "http://registry.npm.taobao.org/jsonify/download/jsonify-0.0.0.tgz#2c74b6ee41d93ca51b7b5aaee8f503631d252a73"
@@ -4698,6 +4708,11 @@ mixin-deep@^1.2.0:
     for-in "^1.0.2"
     is-extendable "^1.0.1"
 
+mkdirp@0.3.x:
+  version "0.3.5"
+  resolved "http://registry.npm.taobao.org/mkdirp/download/mkdirp-0.3.5.tgz#de3e5f8961c88c787ee1368df849ac4413eca8d7"
+  integrity sha1-3j5fiWHIjHh+4TaN+EmsRBPsqNc=
+
 mkdirp@^0.5.0, mkdirp@^0.5.1, mkdirp@~0.5.0:
   version "0.5.1"
   resolved "http://registry.npm.taobao.org/mkdirp/download/mkdirp-0.5.1.tgz#30057438eac6cf7f8c4767f38648d6697d75c903"
@@ -4784,6 +4799,11 @@ natural-compare@^1.4.0:
   resolved "http://registry.npm.taobao.org/natural-compare/download/natural-compare-1.4.0.tgz#4abebfeed7541f2c27acfb29bdbbd15c8d5ba4f7"
   integrity sha1-Sr6/7tdUHywnrPspvbvRXI1bpPc=
 
+ncp@~0.4.2:
+  version "0.4.2"
+  resolved "http://registry.npm.taobao.org/ncp/download/ncp-0.4.2.tgz#abcc6cbd3ec2ed2a729ff6e7c1fa8f01784a8574"
+  integrity sha1-q8xsvT7C7Spyn/bnwfqPAXhKhXQ=
+
 needle@^2.2.1:
   version "2.2.4"
   resolved "http://registry.npm.taobao.org/needle/download/needle-2.2.4.tgz#51931bff82533b1928b7d1d69e01f1b00ffd2a4e"
@@ -4819,6 +4839,16 @@ node-env-file@^0.1.8:
   version "0.1.8"
   resolved "http://registry.npm.taobao.org/node-env-file/download/node-env-file-0.1.8.tgz#fccb7b050f735b5a33da9eb937cf6f1ab457fb69"
   integrity sha1-/Mt7BQ9zW1oz2p65N89vGrRX+2k=
+
+node-fs-extra@^0.8.2:
+  version "0.8.2"
+  resolved "http://registry.npm.taobao.org/node-fs-extra/download/node-fs-extra-0.8.2.tgz#09fb2b60d30f7d703e361ecb626a91404f17097a"
+  integrity sha1-CfsrYNMPfXA+Nh7LYmqRQE8XCXo=
+  dependencies:
+    jsonfile "~1.1.0"
+    mkdirp "0.3.x"
+    ncp "~0.4.2"
+    rimraf "~2.2.0"
 
 node-libs-browser@^2.0.0:
   version "2.1.0"
@@ -5977,6 +6007,11 @@ rimraf@^2.2.8, rimraf@^2.5.4, rimraf@^2.6.1, rimraf@^2.6.2, rimraf@~2.6.2:
   integrity sha1-LtgVDSShbqhlHm1u8PR8QVjOejY=
   dependencies:
     glob "^7.0.5"
+
+rimraf@~2.2.0:
+  version "2.2.8"
+  resolved "http://registry.npm.taobao.org/rimraf/download/rimraf-2.2.8.tgz#e439be2aaee327321952730f99a8929e4fc50582"
+  integrity sha1-5Dm+Kq7jJzIZUnMPmaiSnk/FBYI=
 
 ripemd160@^2.0.0, ripemd160@^2.0.1:
   version "2.0.2"
