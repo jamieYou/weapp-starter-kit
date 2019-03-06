@@ -53,6 +53,7 @@
     "gulp-eslint": "^4.0.2",
     "gulp-if": "^2.0.2",
     "gulp-less": "^3.5.0",
+    "gulp-less-changed": "^1.4.2",
     "gulp-postcss": "^7.0.1",
     "gulp-px2rpx": "^0.2.2",
     "gulp-rename": "^1.2.3",

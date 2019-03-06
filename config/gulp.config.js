@@ -8,6 +8,7 @@ const eslint = require('gulp-eslint')
 const px2rpx = require('gulp-px2rpx')
 const gulpif = require('gulp-if')
 const changed = require('gulp-changed')
+const lessChanged = require('gulp-less-changed')
 const _ = require('lodash')
 const notifier = require('node-notifier')
 const { __DEV__ } = require('./env')
@@ -50,6 +51,7 @@ const takes_config = {
   lessCompile: [
     'src/**/*.{less,wxss}',
     steam => steam
+      .pipe(lessChanged())
       .pipe(less())
       .on('error', handleError)
       .pipe(
