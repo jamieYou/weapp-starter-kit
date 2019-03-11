@@ -1,8 +1,6 @@
 const gulp = require('gulp')
 const del = require('del')
-const createConfig = require('./config/gulp.config')
-
-const { take_names, watch_take } = createConfig()
+const { take_names, watch_take } = require('./config/gulp.config')
 
 // clean dist folder
 gulp.task('clean', () => del(['./dist/**']))

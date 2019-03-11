@@ -101,7 +101,7 @@ function waitContext(wxml) {
 
 module.exports = function (file, wxml) {
   resetVarName()
-  const html = minify(wxml, { removeComments: true, keepClosingSlash: true })
+  const html = minify(wxml, { removeComments: true, keepClosingSlash: true, caseSensitive: true })
   const json = html2json(html)
   const code = each(json.child).join(';')
   const render = parseCodeBinding(

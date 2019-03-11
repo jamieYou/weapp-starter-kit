@@ -10,7 +10,7 @@ module.exports = {
     libraryTarget: 'commonjs2',
     filename: 'lib.js',
   },
-  devtool: false,
+  devtool: 'source-map',
   resolve: {
     alias: {
       '@': path.resolve('src')

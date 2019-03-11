@@ -11,8 +11,9 @@ const changed = require('gulp-changed')
 const lessChanged = require('gulp-less-changed')
 const _ = require('lodash')
 const notifier = require('node-notifier')
-const { __DEV__ } = require('./env')
 const babel = require('gulp-babel')
+const sourcemaps = require('gulp-sourcemaps')
+const { __DEV__ } = require('./env')
 const wxBabel = require('./gulp-wx-babel')
 const ewx = require('./gulp-ewx')
 
@@ -29,7 +30,7 @@ const handleError = function (err) {
 
 const takes_config = {
   fileCopy: [
-    ['src/**/*.json', 'src/**/*.{png,svg,jpg,jpeg}'],
+    ['src/**/*.json', 'src/**/*.{png,svg,jpg,jpeg}', 'src/**/*.wxs'],
     steam => steam
       .pipe(changed('dist'))
       .pipe(gulp.dest('dist'))
@@ -66,9 +67,10 @@ const takes_config = {
   ],
 
   buildJS: [
-    ['src/**/*.js', 'src/**/*.wxs'],
+    'src/**/*.js',
     steam => steam
       .pipe(changed('dist'))
+      .pipe(sourcemaps.init())
       .pipe(eslint())
       .pipe(eslint.format())
       .pipe(gulpif(!__DEV__, eslint.failAfterError()))
@@ -76,6 +78,7 @@ const takes_config = {
       .pipe(wxBabel())
       .on('error', handleError)
       .pipe(gulpif(!__DEV__, uglify()))
+      .pipe(sourcemaps.write('./'))
       .pipe(gulp.dest('dist'))
   ],
 
@@ -96,30 +99,28 @@ const takes_config = {
   ]
 }
 
-module.exports = function createConfig() {
-  const watch_list = _.map(takes_config, ([src, take], name) => {
-    gulp.task(name, () => {
-      return take(gulp.src(src, { base: 'src' }))
-    })
-
-    return () => gulp.watch(src, gulp.series([name]))
+const watch_list = _.map(takes_config, ([src, take], name) => {
+  gulp.task(name, () => {
+    return take(gulp.src(src, { base: 'src' }))
   })
 
-  gulp.task('eslint', () => {
-    return gulp
-      .src('src/**/*.{js,wxs}')
-      .pipe(eslint())
-      .pipe(eslint.format())
-      .pipe(eslint.failAfterError())
-  })
+  return () => gulp.watch(src, gulp.series([name]))
+})
 
-  gulp.task('watch', done => {
-    watch_list.forEach(watch => watch())
-    done()
-  })
+gulp.task('eslint', () => {
+  return gulp
+    .src('src/**/*.{js,wxs}')
+    .pipe(eslint())
+    .pipe(eslint.format())
+    .pipe(eslint.failAfterError())
+})
 
-  return {
-    take_names: Object.keys(takes_config),
-    watch_take: 'watch',
-  }
+gulp.task('watch', done => {
+  watch_list.forEach(watch => watch())
+  done()
+})
+
+module.exports =  {
+  take_names: Object.keys(takes_config),
+  watch_take: 'watch',
 }

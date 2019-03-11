@@ -57,6 +57,7 @@
     "gulp-postcss": "^7.0.1",
     "gulp-px2rpx": "^0.2.2",
     "gulp-rename": "^1.2.3",
+    "gulp-sourcemaps": "^2.6.5",
     "gulp-uglify": "^3.0.0",
     "gulp-util": "^3.0.8",
     "html-minifier": "^3.5.21",

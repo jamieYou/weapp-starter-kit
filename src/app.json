@@ -7,5 +7,6 @@
     "navigationBarBackgroundColor": "#fff",
     "navigationBarTitleText": "miniapp",
     "navigationBarTextStyle": "black"
-  }
+  },
+  "usingComponents": {}
 }
