@@ -17,10 +17,12 @@ $ cp project.config.json.example project.config.json
 ## Script
 ```
 yarn start //开发模式
-yarn staging //部署
-yarn build //部署
+NODE_ENV=xxx yarn build //部署 # NODE_ENV 默认为 production 
 yarn lint // 用于 ci 的 esling 检查
 ```
+
+## 上传代码
+`yarn upload` #根据提示输入信息
 
 ## css
 1. 使用 less 作为开发语言
