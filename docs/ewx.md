@@ -19,9 +19,9 @@ ewx 是一个基于 wxml 扩展的小程序 html 模板。主要功能是扩展 
 使用类来声明页面和组件
 ```
 // demo.js
-import { WeApp, createPage } from '@/store'
+import { WeApp, createComponent } from '@/store'
 
-@createPage(require)
+@createComponent(require)
 export class Demo extends WeApp {
   title = 'weapp'
 
@@ -50,21 +50,20 @@ export class Demo extends WeApp {
 # api 介绍
 ## Component 声明
 ```
-import { WeApp, createComponent } from '@weapp'
+import { WeApp, createComponent, prop, watch } from '@weapp'
 
 @createComponent(require)
 export class Counter extends WeApp {
-  // Component构造器下的配置
-  static properties = {
-    myProperty: { // 属性名
-      type: String, // 类型（必填），目前接受的类型包括：String, Number, Boolean, Object, Array, null（表示任意类型）
-      value: '', // 属性初始值（可选），如果未指定则会根据类型选择一个
-      observer: 'myPropertyChange'
-      // 属性被改变时执行的函数（可选），也可以写成实例中定义的方法名字符串, 如：'myPropertyChange'
-    },
-  }
   static options = {}
   static externalClasses = {}
+  
+  @prop(String) myProp1 // properties 声明
+
+  @watch('myProp1') // 监听属性变化，参考原生组件的 observers
+  myProp1Change(){
+      
+  }
+
 
   // 生命周期函数
   attached() { }
@@ -86,11 +85,8 @@ export class Counter extends WeApp {
   }
 }
 ```
-Component 的配置目前只支持 `properties`, `options`, `externalClasses`, 这三个参数都是静态属性，跟实例没有直接关系的。
-
-## scope
-
-可以通过 `this.$scope` 访问原生的实例(页面或组件)
+Component 的配置目前只支持 `options`, `externalClasses`,
+这三个参数都是静态属性，跟实例没有直接关系的。
 
 ## update 
 
@@ -98,10 +94,6 @@ Component 的配置目前只支持 `properties`, `options`, `externalClasses`, �
 ```
 this.update({ title: 'abc' }, ()=> {}) // 和 setData 类似，但是更新的目标是当前的 this
 ```
-
-## props
-
-通过 `this.props` 可以到获取参数(页面里是当前的路由参数对象，组件里是传递进来的 properties)
 
 ## template
 `.ewx` 声明 template 的标签时，内部的标签内容不支持 `.ewx` 的语法，只能采用原生的语法

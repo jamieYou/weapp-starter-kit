@@ -43,7 +43,7 @@ function create() {
   fs.outputFileSync(file_path + '.js', getJSCode())
   fs.outputFileSync(
     file_path + '.json',
-    JSON.stringify(config.is_page ? {} : { component: true }, null, 2) + '\n'
+    JSON.stringify(config.is_page ? { usingComponents: {} } : { component: true }, null, 2) + '\n'
   )
   fs.outputFileSync(file_path + '.less', `.${file_basename} {\n\n}\n`)
   fs.outputFileSync(file_path + '.ewx', `<view class="${file_basename}">\n\n</view>\n`)

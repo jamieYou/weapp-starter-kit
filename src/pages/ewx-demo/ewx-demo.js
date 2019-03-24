@@ -1,6 +1,6 @@
-import { WeApp, createPage } from '@/store'
+import { WeApp, createComponent } from '@/store'
 
-@createPage(require)
+@createComponent(require)
 export class Demo extends WeApp {
   motto = 'Hello World'
   userInfo = {
