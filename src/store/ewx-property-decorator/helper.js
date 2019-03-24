@@ -38,18 +38,23 @@ export function prop(options = null) {
   }
 }
 
-export function watch(property_nams) {
+function setDefault(target, key, value) {
+  return key in target ? target[key] : target[key] = value
+}
+
+export function watch(property_names) {
   return (target, key, descriptor) => {
-    _.set(target.constructor, `observers.${property_nams}`, descriptor.value)
+    const observers = setDefault(target.constructor, 'observers', {})
+    observers[property_names || key] = descriptor.value
   }
 }
 
-export function createRelation(component_path, type, t) {
+export function createRelation(component_path, type, target) {
   function getDecorator(name) {
-    return (target, k, descriptor) => {
-      _.set(target.constructor, `relations.${component_path}.type`, type)
-      _.set(target.constructor, `relations.${component_path}.target`, t)
-      _.set(target.constructor, `relations.${component_path}.${name}`, descriptor.value)
+    return ({ constructor }, k, descriptor) => {
+      const relations = setDefault(constructor, 'relations', {})
+      const obj = setDefault(relations, component_path, {})
+      Object.assign(obj, { type, target, [name]: descriptor.value })
     }
   }
 
