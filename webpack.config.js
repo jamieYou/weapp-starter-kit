@@ -6,9 +6,9 @@ module.exports = {
   target: 'node',
   entry: path.resolve('lib.js'),
   output: {
-    path: path.resolve('dist'),
+    path: path.resolve('dist/miniprogram_npm'),
     libraryTarget: 'commonjs2',
-    filename: 'lib.js',
+    filename: 'build.js',
   },
   devtool: 'source-map',
   resolve: {

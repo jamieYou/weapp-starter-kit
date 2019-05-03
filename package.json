@@ -1,6 +1,6 @@
 {
   "name": "weapp-starter-kit",
-  "version": "1.7.6",
+  "version": "1.7.7",
   "license": "MIT",
   "homepage": "https://github.com/jamieYou/mini-program-starter-kit",
   "scripts": {
@@ -14,6 +14,7 @@
     "@minapp/wx": "^2.2.1",
     "core-decorators": "^0.20.0",
     "dayjs": "^1.8.10",
+    "ewx": "^1.0.1",
     "flyio": "^0.6.7",
     "lodash": "^4.17.10",
     "mobx": "^4.2.0",
@@ -67,7 +68,6 @@
     "inquirer": "^6.2.2",
     "ipv4": "^1.0.4",
     "node-env-file": "^0.1.8",
-    "node-fs-extra": "^0.8.2",
     "node-notifier": "^5.2.1",
     "ora": "^3.0.0",
     "prettier": "^1.15.3",

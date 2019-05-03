@@ -1,5 +1,5 @@
 const path = require('path')
-const fs = require('node-fs-extra')
+const fs = require('fs-extra')
 const _ = require('lodash')
 const program = require('commander')
 

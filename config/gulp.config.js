@@ -15,7 +15,7 @@ const babel = require('gulp-babel')
 const sourcemaps = require('gulp-sourcemaps')
 const { __DEV__ } = require('./env')
 const wxBabel = require('./gulp-wx-babel')
-const ewx = require('./gulp-ewx')
+const ewx = require('ewx/ewx-parse/gulp-plugin')
 
 const handleError = function (err) {
   const colors = gutil.colors
