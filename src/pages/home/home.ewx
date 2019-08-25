@@ -1,0 +1,6 @@
+<view>
+  <view>{{ list.join(',') }}</view>
+  <view wx:for="{{ list }}" wx:key="{{ index }}">
+    <text bind:tap="{{ ()=> this.click(item) }}">{{ jia1(item) }}</text>
+  </view>
+</view>
