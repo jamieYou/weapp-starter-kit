@@ -4585,10 +4585,10 @@ lodash@4.17.4:
   resolved "http://registry.npm.taobao.org/lodash/download/lodash-4.17.4.tgz#78203a4d1c328ae1d86dca6460e369b57f4055ae"
   integrity sha1-eCA6TRwyiuHYbcpkYONptX9AVa4=
 
-lodash@^4.13.1, lodash@^4.17.10, lodash@^4.17.11, lodash@^4.17.4, lodash@^4.3.0:
-  version "4.17.11"
-  resolved "http://registry.npm.taobao.org/lodash/download/lodash-4.17.11.tgz#b39ea6229ef607ecd89e2c8df12536891cac9b8d"
-  integrity sha1-s56mIp72B+zYniyN8SU2iRysm40=
+lodash@^4.13.1, lodash@^4.17.10, lodash@^4.17.11, lodash@^4.17.19, lodash@^4.17.4, lodash@^4.3.0:
+  version "4.17.19"
+  resolved "https://registry.npm.taobao.org/lodash/download/lodash-4.17.19.tgz#e48ddedbe30b3321783c5b4301fbd353bc1e4a4b"
+  integrity sha1-5I3e2+MLMyF4PFtDAfvTU7weSks=
 
 log-symbols@^2.2.0:
   version "2.2.0"
