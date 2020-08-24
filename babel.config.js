@@ -1,16 +1,16 @@
 const _ = require('lodash')
-const define = _.pick(require('./config/env'), '__DEV__', 'NODE_ENV', 'API_URL')
+const { appENV } = require('./config/env')
 
 module.exports = {
   presets: [
     [
       '@babel/preset-env',
       {
+        'useBuiltIns': 'usage',
+        'corejs': 3,
         'targets': {
-          'browsers': [
-            'last 2 versions',
-            'safari >= 8'
-          ]
+          'chrome': '49',
+          'safari': '10'
         }
       }
     ]
@@ -19,15 +19,7 @@ module.exports = {
     'lodash',
     [
       'transform-define',
-      _.mapKeys(define, (v, key) => `process.env.${key}`)
-    ],
-    [
-      'module-resolver',
-      {
-        'alias': {
-          '@': './src',
-        }
-      }
+      _.mapKeys(appENV, (v, key) => `process.env.${key}`)
     ],
     [
       '@babel/plugin-transform-runtime',

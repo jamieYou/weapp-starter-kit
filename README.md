@@ -21,15 +21,9 @@ NODE_ENV=xxx yarn build //部署 # NODE_ENV 默认为 production
 yarn lint // 用于 ci 的 esling 检查
 ```
 
-## 上传代码
-`yarn upload` #根据提示输入信息
-
 ## css
-1. 使用 less 作为开发语言
-2. px2rpx，less 里不使用 rpx，编译时通过工具转成rpx，需要强制使用px时，使用大写(PX)
-
-## babel 
-通过 babel 支持 es6+ 的语法，解决小程序 ide 自带的 babel 不支持的语法（例如 async 和 装饰器）
+1. 使用 scss 作为开发语言
+2. 页面、组件以外的 scss 文件，请以 _ 开头或者放在 styles 目录
 
 ## npm 支持
 可以在 js 中引入 npm 的包
@@ -42,24 +36,31 @@ yarn lint // 用于 ci 的 esling 检查
 ## wxp
 全局变量 wxp，对 wx 的 api 进行 Promise 封装 
 
-## 网络请求
-使用 `flyio` 库封装网络请求
-
-[后端接口配置](src/utils/env.js)，可以区分不同环境变量来配置
-
 ## 环境变量
-```
-process.env.PORT： 默认为 3000
-process.env.API_URL：默认根据 PORT 组成本地后端接口的 url
-process.env.NODE_ENV
-```
 支持通过 `.env` 文件修改环境变量，[参考](https://www.npmjs.com/package/node-env-file)
 
-## ewx 模板引擎
-[参考 ewx 文档](docs/ewx.md)
+## Observer
+让页面和 mobx 结合使用
 
-## mobx 使用
-[参考 ewx 文档](docs/ewx.md)
-[ewx 和 mobx 结合开发建议](docs/mobx.md)
-
-## [快速生成页面、组件模版](docs/wx-template.md)
+```javascript
+Observer.Page({
+  state() {
+    return {
+      show: true,
+      authStore,
+      list: new Collection,
+    }
+  },
+  computed: {
+    get nickname() {
+      return authStore.user.nickname
+    }
+  },
+  onLoad() {
+    // state 和 computed 设置到 this 上，并同步到 data
+    this.authStore;
+    this.nickname;
+  }
+})
+```
+支持页面、组件(Observer.Component)、Behavior(Observer.Behavior)，其他参数按照官方文档即可

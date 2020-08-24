@@ -1,0 +1,41 @@
+stages:
+  - test
+  - build
+
+cache:
+  key: node_modules
+  paths:
+    - node_modules/
+
+before_script:
+  - nodenv shell 11.13.0
+  - yarn install
+  - cp project.config.json.example project.config.json
+
+test:
+  script:
+    - yarn run lint
+  except:
+    - develop
+    - staging
+    - master
+
+deploy_staging:
+  stage: build # 对应stages上的job名称
+  script:
+    - yarn build:staging
+    - APP_ENV=staging node script/upload.js
+  only:
+    - staging
+  tags:
+    - mac-shell-runner
+
+deploy_production:
+  stage: build # 对应stages上的job名称
+  script:
+    - yarn build:production
+    - APP_ENV=production node script/upload.js
+  only:
+    - master
+  tags:
+    - mac-shell-runner

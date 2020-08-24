@@ -1,11 +1,11 @@
 {
   "pages": [
-    "pages/ewx-demo/ewx-demo"
+    "pages/root/home/home"
   ],
   "window": {
     "backgroundTextStyle": "light",
     "navigationBarBackgroundColor": "#fff",
-    "navigationBarTitleText": "miniapp",
+    "navigationBarTitleText": "app",
     "navigationBarTextStyle": "black"
   },
   "usingComponents": {}

@@ -1,39 +1,44 @@
-const inquirer = require('inquirer')
-const { exec } = require('child-process-promise')
-const dayjs = require('dayjs')
-const ora = require('ora')
-const chalk = require('chalk')
+const dayjs = require('dayjs');
+const path = require('path');
+const ci = require(
+  path.join(
+    process.execPath.replace(/bin\/node$/, ''),
+    'lib/node_modules/miniprogram-ci',
+  )
+);
 
-const spinner = ora('building...')
-const wxcli = '/Applications/wechatwebdevtools.app/Contents/Resources/app.nw/bin/cli'
+const robots = ['', 'staging', 'production'];
 
-const questions = [
-  {
-    type: 'list',
-    name: 'env',
-    message: '选择环境',
-    choices: ['staging', 'production'],
-  },
-  {
-    type: 'input',
-    name: 'version',
-    message: '版本号',
-    default: dayjs().format('YY-MM-DD_HH:mm'),
-  },
-  {
-    type: 'input',
-    name: 'desc',
-    message: '描述',
-  },
-]
+const config = {
+  version: dayjs().format('YYMMDDTHH'),
+  env: process.env.APP_ENV,
+};
 
-async function run() {
-  const { env, version, desc } = await inquirer.prompt(questions)
-  spinner.start()
-  const desc_str = desc ? `--upload-desc ${JSON.stringify(desc)}` : ''
-  await exec(`NODE_ENV=${env} yarn build`)
-  await exec(`${wxcli} -u ${version}@${process.cwd()} ${desc_str}`)
-  console.log(chalk.green('\n上传成功'))
+function getAppId() {
+  return require('../project.config.json').appid;
 }
 
-run().finally(() => spinner.stop())
+async function upload(env = config.env, desc, version = config.version) {
+  const desc_str = desc || env;
+  const projectPath = path.resolve();
+  const privateKeyPath = path.resolve('script/upload.key');
+  const appid = getAppId();
+  const robot = robots.indexOf(env);
+
+  const project = new ci.Project({
+    appid, type: 'miniProgram',
+    projectPath, privateKeyPath,
+    ignores: ['node_modules/**/*'],
+  });
+
+  await ci.upload({
+    project, version,
+    desc: desc_str,
+    robot, onProgressUpdate: console.log,
+  });
+}
+
+upload().catch(err => {
+  console.error(err);
+  process.exit(1);
+});

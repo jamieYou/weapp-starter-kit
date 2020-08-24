@@ -1,0 +1,1 @@
+<view>{{ authStore.user.nickname || 'hello' }}</view>
