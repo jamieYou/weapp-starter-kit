@@ -11,7 +11,7 @@
   "dependencies": {
     "@minapp/wx": "^2.2.1",
     "@vuex-orm/core": "^0.36.3",
-    "axios": "^0.19.2",
+    "axios": "^0.21.1",
     "core-decorators": "^0.20.0",
     "core-js": "^3.6.5",
     "dayjs": "^1.8.30",
